@@ -26,6 +26,8 @@ namespace PureSound
             InitializeComponent();
             AppFrame.frame = MainFrame;
             AppFrame.frame.Navigate(new pages.auth.authorization());
+            AppConn.modeldb = new pureSoundEntities1();
+
         }
     }
 }
