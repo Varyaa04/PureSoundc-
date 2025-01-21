@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PureSound.appCurr;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,19 @@ namespace PureSound.pages.player
     /// </summary>
     public partial class mainPlayer : Page
     {
-        public mainPlayer()
+        private usersTable _auth = new usersTable();
+
+        public mainPlayer(usersTable authUser)
         {
             InitializeComponent();
+
+            if (authUser != null)
+            {
+                _auth = authUser;
+            }
+            DataContext = _auth;
+
         }
+
     }
 }

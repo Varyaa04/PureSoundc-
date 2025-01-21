@@ -8,6 +8,6 @@ namespace PureSound.appCurr
 {
     internal class AppConn
     {
-        public static pureSoundEntities1 modeldb;
+        public static pureSoundEntities modeldb;
     }
 }

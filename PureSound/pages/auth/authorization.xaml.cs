@@ -1,4 +1,5 @@
-﻿using PureSound.appCurr;
+﻿using NuGet.Protocol.Plugins;
+using PureSound.appCurr;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,11 +34,6 @@ namespace PureSound.pages.auth
 
         private void btnauth_Click(object sender, RoutedEventArgs e)
         {
-            AuthUser();     
-        }
-
-        public void AuthUser()
-        {
             try
             {
                 var password = AppConn.modeldb.usersTable.FirstOrDefault(x => x.userPassword == passtxt.Password);
@@ -58,8 +54,7 @@ namespace PureSound.pages.auth
                     MessageBox.Show("Здравствуйте, " + userObj.userName + "!",
                                 "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                     App.Current.Properties["idUser"] = userObj.idUser;
-                    AppFrame.frame.Navigate(new player.mainPlayer());
-                       
+                    AppFrame.frame.Navigate(new player.mainPlayer((sender as Button).DataContext as usersTable));
                 }
             }
             catch (Exception Ex)

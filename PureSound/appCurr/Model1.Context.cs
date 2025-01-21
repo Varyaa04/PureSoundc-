@@ -13,18 +13,18 @@ namespace PureSound.appCurr
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class pureSoundEntities1 : DbContext
+    public partial class pureSoundEntities : DbContext
     {
-        public static pureSoundEntities1 _context;
-        public pureSoundEntities1()
-            : base("name=pureSoundEntities1")
+        public static pureSoundEntities _context;
+        public pureSoundEntities()
+            : base("name=pureSoundEntities")
         {
         }
     
-        public static pureSoundEntities1 GetContext()
+        public static pureSoundEntities GetContext()
         {
             if (_context == null)
-                _context = new pureSoundEntities1();
+                _context = new pureSoundEntities();
             return _context;
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

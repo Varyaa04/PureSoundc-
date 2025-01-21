@@ -51,7 +51,7 @@
           <Property Name="userLogin" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="userPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="pureSoundEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="pureSoundEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="usersTable" EntityType="Self.usersTable" />
         </EntityContainer>
       </Schema>
@@ -59,7 +59,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище pureSoundModelContainer" CdmEntityContainer="pureSoundEntities1">
+        <EntityContainerMapping StorageEntityContainer="Хранилище pureSoundModelContainer" CdmEntityContainer="pureSoundEntities">
           <EntitySetMapping Name="usersTable">
             <EntityTypeMapping TypeName="pureSoundModel.usersTable">
               <MappingFragment StoreEntitySet="usersTable">
