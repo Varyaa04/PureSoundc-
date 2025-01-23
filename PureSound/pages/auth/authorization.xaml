@@ -10,7 +10,7 @@
 
     <Grid Background="#FFA1F2FF">
         <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Margin="0,0,560,0" Background="#FFB3EFF9">
-            <Label Content="AUTHOR" FontSize="72" Margin="29,63,34,310" FontFamily="Bahnschrift Light Condensed"/>
+            <Label Content="AUTHOR" FontSize="72" Margin="29,63,34,254" FontFamily="Bahnschrift Light Condensed"/>
         </Border>
 
         <Label Content="ORIZA" FontSize="72" Margin="70,149,540,223" FontFamily="Bahnschrift Light Condensed"/>
