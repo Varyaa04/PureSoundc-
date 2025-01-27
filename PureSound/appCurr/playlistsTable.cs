@@ -12,24 +12,20 @@ namespace PureSound.appCurr
     using System;
     using System.Collections.Generic;
     
-    public partial class usersTable
+    public partial class playlistsTable
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public usersTable()
+        public playlistsTable()
         {
-            this.playlistsTable = new HashSet<playlistsTable>();
-            this.tableFavourite = new HashSet<tableFavourite>();
+            this.playlistTracksTable = new HashSet<playlistTracksTable>();
         }
     
+        public int idPlaylist { get; set; }
         public int idUser { get; set; }
-        public string userName { get; set; }
-        public string userEmail { get; set; }
-        public string userLogin { get; set; }
-        public string userPassword { get; set; }
+        public string namePlaylist { get; set; }
     
+        public virtual usersTable usersTable { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<playlistsTable> playlistsTable { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<tableFavourite> tableFavourite { get; set; }
+        public virtual ICollection<playlistTracksTable> playlistTracksTable { get; set; }
     }
 }

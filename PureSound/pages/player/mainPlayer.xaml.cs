@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static NuGet.Packaging.PackagingConstants;
 
 namespace PureSound.pages.player
 {
@@ -25,19 +26,12 @@ namespace PureSound.pages.player
     /// </summary>
     public partial class mainPlayer : Page
     {
-        private usersTable _auth = new usersTable();
-
         private const string DeezerApiUrl = "https://api.deezer.com/chart/0/tracks";
         public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
-        public mainPlayer(usersTable authUser)
+        public mainPlayer()
         {
             InitializeComponent();
 
-            if (authUser != null)
-            {
-                authUser = _auth;
-            }
-            DataContext = _auth;
             int authId = Convert.ToInt32(App.Current.Properties["idUser"].ToString());
             usernameTb.Text = AppConn.modeldb.usersTable
                 .Where(x => x.idUser == authId)
@@ -79,6 +73,7 @@ namespace PureSound.pages.player
                 {
                     Tracks.Add(new Track
                     {
+                        Id = item.Id,   
                         Title = item.Title,
                         Artist = item.Artist.Name,
                         Duration = FormatDuration(item.Duration),
@@ -114,7 +109,8 @@ namespace PureSound.pages.player
                     foreach (var item in result.Data)
                     {
                         Tracks.Add(new Track
-                        {
+                        {      
+                            Id = item.Id,
                             Title = item.Title,
                             Artist = item.Artist.Name,
                             Duration = TimeSpan.FromSeconds(item.Duration).ToString(@"mm\:ss"),
@@ -138,6 +134,7 @@ namespace PureSound.pages.player
 
         public class Track
         {
+            public string Id { get; set; }
             public string Title { get; set; }
             public string Artist { get; set; }
             public string Duration { get; set; }
@@ -151,6 +148,7 @@ namespace PureSound.pages.player
 
         public class DeezerTrack
         {
+            public string Id { get; set; }
             public string Title { get; set; }
             public int Duration { get; set; }
             public DeezerArtist Artist { get; set; }
@@ -167,5 +165,49 @@ namespace PureSound.pages.player
             [JsonProperty("cover_medium")]
             public string CoverMedium { get; set; }
         }
+
+        private void btnFav_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                TracksList.ItemsSource = Tracks;
+                int idUsers = Convert.ToInt32(App.Current.Properties["idUser"]);
+                Button b = sender as Button;
+                string ID = Convert.ToString(float.Parse(((b.Parent as StackPanel).Children[0] as TextBlock).Text));
+                var fav = pureSoundEntities.GetContext().tableFavourite.FirstOrDefault(o => o.idUser == idUsers);
+                if (ID == fav.favTracks.ToString())
+                {
+                    MessageBox.Show("Данный трек уже в 'Избранном'!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    if (fav == null)
+                    {
+                        fav = new tableFavourite()
+                        {
+                            idUser = idUsers,
+                            idTrack = ID,
+                        };
+                        pureSoundEntities.GetContext().tableFavourite.Add(fav);
+                        pureSoundEntities.GetContext().SaveChanges();
+                    }
+
+
+                    MessageBox.Show("успешно добавлен!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                    AppFrame.frame.Navigate(new mainPlayer());
+                }
+              
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Произошла ошибка: " + ex.ToString(), "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void TracksList_Selected(object sender, RoutedEventArgs e)
+        {
+        }
+       
     }
 }
+

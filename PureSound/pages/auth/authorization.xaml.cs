@@ -54,7 +54,7 @@ namespace PureSound.pages.auth
                     MessageBox.Show("Здравствуйте, " + userObj.userName + "!",
                                 "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                     App.Current.Properties["idUser"] = userObj.idUser;
-                    AppFrame.frame.Navigate(new player.mainPlayer((sender as Button).DataContext as usersTable));
+                    AppFrame.frame.Navigate(new player.mainPlayer( ));
                 }
             }
             catch (Exception Ex)

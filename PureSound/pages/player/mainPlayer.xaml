@@ -18,8 +18,13 @@
                   <Run Text=""/>
                         </TextBlock>
                     </StackPanel>
-                    <StackPanel Height="100"/>
-                    <StackPanel Height="100"/>
+                    <StackPanel Height="146">
+                        <Button x:Name="btnFav" Content="Favourite" Margin="15,0,0,0" Width="159" Height="55"/>
+                        <Button x:Name="btnPlaylists" Content="Playlists" Margin="15,30,0,0" Width="159" Height="55"/>
+                    </StackPanel>
+                    <StackPanel Height="100">
+                        <Button x:Name="btnExit" Content="Exit" Margin="105,50,0,0" Width="87" Height="43"/>
+                    </StackPanel>
                 </StackPanel>
             </Border>
             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
@@ -28,16 +33,18 @@
                     <Button x:Name="SearchButton" Content="Поиск" Height="25" VerticalAlignment="Top" Click="SearchButton_Click" Width="123"/>
                 </StackPanel>
                 <StackPanel Height="430">
-                    <ListView Name="TracksList" Margin="0,10,0,0" Height="370" Width="506">
+                    <ListView x:Name="TracksList" Height="370" Width="506">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="5">
+                                    <TextBlock Text="{Binding Id}" FontWeight="Bold" Visibility="Hidden"/>
                                     <Image Source="{Binding CoverUrl}" Width="50" Height="50" Margin="5"/>
                                     <StackPanel>
                                         <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
                                         <TextBlock Text="{Binding Artist}" FontStyle="Italic"/>
                                         <TextBlock Text="{Binding Duration}" Foreground="Gray"/>
                                     </StackPanel>
+                                    <Button x:Name="btnFav" Content="+" FontWeight="Bold" Margin="100,0,0,0" Height="20" Width="20" Click="btnFav_Click"/>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>

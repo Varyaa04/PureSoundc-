@@ -4,8 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b045cdc1df7849e193a6fde58698fc0f" Name="Diagram1">
-        <EntityTypeShape EntityType="pureSoundModel.usersTable" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+      <Diagram DiagramId="9879f4adb6424f1cafa607e5a663a69d" Name="Diagram1">
+        <EntityTypeShape EntityType="pureSoundModel.playlistsTable" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="pureSoundModel.playlistTracksTable" Width="1.5" PointX="5.25" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="pureSoundModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="pureSoundModel.tableFavourite" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="pureSoundModel.usersTable" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <AssociationConnector Association="pureSoundModel.FK_playlistsTable_usersTable" ManuallyRouted="false" />
+        <AssociationConnector Association="pureSoundModel.FK_playlistTracksTable_playlistsTable" ManuallyRouted="false" />
+        <AssociationConnector Association="pureSoundModel.FK_tableFavourite_usersTable" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
