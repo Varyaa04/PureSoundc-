@@ -1,5 +1,4 @@
-﻿using PureSound.appCurr;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,24 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace PureSound
+namespace PureSound.pages.player
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Логика взаимодействия для favouritePage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class favouritePage : Page
     {
-        public MainWindow()
+        public favouritePage()
         {
             InitializeComponent();
-            AppFrame.frame = MainFrame;
-            AppFrame.frame.Navigate(new pages.auth.authorization());
-            AppConn.modeldb = new pureSoundEntities();
-        }
-
-        public void CloseWindow()
-        {
-            this.Close();
         }
     }
 }

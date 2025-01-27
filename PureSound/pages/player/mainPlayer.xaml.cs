@@ -32,11 +32,7 @@ namespace PureSound.pages.player
         {
             InitializeComponent();
 
-            int authId = Convert.ToInt32(App.Current.Properties["idUser"].ToString());
-            usernameTb.Text = AppConn.modeldb.usersTable
-                .Where(x => x.idUser == authId)
-                .Select(x => x.userName)
-                .FirstOrDefault();
+           
             TracksList.ItemsSource = Tracks;
             LoadTracks();
 

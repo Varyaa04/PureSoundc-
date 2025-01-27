@@ -1,5 +1,6 @@
 ﻿using NuGet.Protocol.Plugins;
 using PureSound.appCurr;
+using PureSound.pages.player;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,10 @@ namespace PureSound.pages.auth
                     MessageBox.Show("Здравствуйте, " + userObj.userName + "!",
                                 "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                     App.Current.Properties["idUser"] = userObj.idUser;
-                    AppFrame.frame.Navigate(new player.mainPlayer( ));
+                    WindowPlayer secondWindow = new WindowPlayer();
+                    secondWindow.Show();
+                    Application.Current.MainWindow.Close();
+
                 }
             }
             catch (Exception Ex)

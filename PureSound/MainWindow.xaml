@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="PureSound" 
         Height="485" Width="850" 
-        MinWidth="850" MinHeight="485">
+        MinWidth="850" MinHeight="485" MaxWidth="850" MaxHeight="485">
     <Grid>
         <Frame x:Name="MainFrame" Content="Frame" NavigationUIVisibility="Hidden"/>
 

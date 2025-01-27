@@ -1,12 +1,12 @@
-﻿<Page x:Class="PureSound.pages.player.mainPlayer"
+﻿<Page x:Class="PureSound.pages.player.favouritePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:PureSound.pages.player"
       mc:Ignorable="d" 
-      d:DesignHeight="485" d:DesignWidth="560"
-      Title="mainPlayer">
+          d:DesignHeight="485" d:DesignWidth="560"
+      Title="favouritePage">
 
     <Grid Background="#FFA1F2FF">
         <StackPanel Orientation="Horizontal">

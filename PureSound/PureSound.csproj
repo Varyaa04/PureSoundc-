@@ -127,6 +127,7 @@
     </Compile>
     <Compile Include="appCurr\AppConn.cs" />
     <Compile Include="appCurr\AppFrame.cs" />
+    <Compile Include="appCurr\AppFramePl.cs" />
     <Compile Include="appCurr\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -175,7 +176,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="pages\player\favouritePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="pages\player\mainPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="pages\player\WindowPlayer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -187,8 +196,14 @@
     <Compile Include="pages\auth\registration.xaml.cs">
       <DependentUpon>registration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="pages\player\favouritePage.xaml.cs">
+      <DependentUpon>favouritePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="pages\player\mainPlayer.xaml.cs">
       <DependentUpon>mainPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="pages\player\WindowPlayer.xaml.cs">
+      <DependentUpon>WindowPlayer.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

@@ -1,0 +1,30 @@
+﻿<Window x:Class="PureSound.pages.player.WindowPlayer"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PureSound.pages.player"
+        mc:Ignorable="d"
+        Title="PureSound" Height="485" Width="850"
+        MinWidth="850" MinHeight="485" MaxWidth="850" MaxHeight="485">
+    <Grid>
+        <StackPanel Orientation="Horizontal">
+            <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Background="#FFB3EFF9">
+                <StackPanel>
+                    <StackPanel Height="100" Orientation="Horizontal" Margin="0,40,0,0" >
+                        <Image Height="84" Width="81" Margin="25,0,0,0" Source="/pages/player/profile.png"/>
+                        <TextBlock x:Name="usernameTb" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36"><Run Text=""/></TextBlock>
+                    </StackPanel>
+                    <StackPanel Height="146">
+                        <Button x:Name="btnFav" Content="Favourite" Margin="15,0,0,0" Width="159" Height="55" Click="btnFav_Click"/>
+                        <Button x:Name="btnPlaylists" Content="Playlists" Margin="15,30,0,0" Width="159" Height="55"/>
+                    </StackPanel>
+                    <StackPanel Height="100">
+                        <Button x:Name="btnExit" Content="Exit" Margin="105,50,0,0" Width="87" Height="43" Click="btnExit_Click"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <Frame x:Name="MainFrame" Content="Frame" NavigationUIVisibility="Hidden" Margin="0,0,0,0" Width="560"/>
+        </StackPanel>
+    </Grid>
+</Window>
