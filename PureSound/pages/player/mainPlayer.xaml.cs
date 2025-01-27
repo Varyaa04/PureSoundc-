@@ -27,7 +27,7 @@ namespace PureSound.pages.player
     {
         private usersTable _auth = new usersTable();
 
-        private const string DeezerApiUrl = "https://api.deezer.com/search?q=top";
+        private const string DeezerApiUrl = "https://api.deezer.com/chart/0/tracks";
         public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
         public mainPlayer(usersTable authUser)
         {
@@ -35,10 +35,14 @@ namespace PureSound.pages.player
 
             if (authUser != null)
             {
-                _auth = authUser;
+                authUser = _auth;
             }
             DataContext = _auth;
-
+            int authId = Convert.ToInt32(App.Current.Properties["idUser"].ToString());
+            usernameTb.Text = AppConn.modeldb.usersTable
+                .Where(x => x.idUser == authId)
+                .Select(x => x.userName)
+                .FirstOrDefault();
             TracksList.ItemsSource = Tracks;
             LoadTracks();
 
@@ -54,7 +58,7 @@ namespace PureSound.pages.player
             }
             else
             {
-                MessageBox.Show("Введите название песни или исполнителя.");
+                MessageBox.Show("Введите название песни или исполнителя.","Ошибка!",MessageBoxButton.OK,MessageBoxImage.Error);
             }
         }
         private async Task SearchTracksAsync(string query)
@@ -84,12 +88,12 @@ namespace PureSound.pages.player
 
                 if (Tracks.Count == 0)
                 {
-                    MessageBox.Show("Ничего не найдено.");
+                    counterTB.Text = "Ничего не найдено.";
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}");
+                MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -118,12 +122,12 @@ namespace PureSound.pages.player
                         });
                     }
 
-                    MessageBox.Show($"Загружено треков: {Tracks.Count}");
+                    counterTB.Text = "Загружено треков: " + Tracks.Count;
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}");
+                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}","Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         private string FormatDuration(int durationInSeconds)

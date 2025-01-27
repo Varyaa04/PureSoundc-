@@ -9,33 +9,42 @@
       Title="mainPlayer">
 
     <Grid Background="#FFA1F2FF">
-        <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Margin="0,0,560,0" Background="#FFB3EFF9">
-            <StackPanel>
-                <StackPanel Height="100" Orientation="Horizontal" Margin="0,40,0,0" >
-                    <Image Height="84" Width="81" Margin="25,0,0,0" Source="/pages/player/profile.png"/>
-                    <TextBlock x:Name="usernameTb" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36"><Run Text="test"/></TextBlock>
-                </StackPanel>
-                <StackPanel Height="100"/>
-                <StackPanel Height="100"/>
-            </StackPanel>
-        </Border>
-        <TextBox Name="SearchBox" Height="30" Margin="355,10,140,0" VerticalAlignment="Top"/>
-        <Button x:Name="SearchButton" Content="Поиск" Height="30" Margin="715,10,10,0" VerticalAlignment="Top" Click="SearchButton_Click"/>
-
-        <ListView Name="TracksList" Margin="295,55,10,55">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" Margin="5">
-                        <Image Source="{Binding CoverUrl}" Width="50" Height="50" Margin="5"/>
-                        <StackPanel>
-                            <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
-                            <TextBlock Text="{Binding Artist}" FontStyle="Italic"/>
-                            <TextBlock Text="{Binding Duration}" Foreground="Gray"/>
-                        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Margin="0,0,0,0" Background="#FFB3EFF9">
+                <StackPanel>
+                    <StackPanel Height="100" Orientation="Horizontal" Margin="0,40,0,0" >
+                        <Image Height="84" Width="81" Margin="25,0,0,0" Source="/pages/player/profile.png"/>
+                        <TextBlock x:Name="usernameTb" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36">
+                  <Run Text=""/>
+                        </TextBlock>
                     </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-        <TextBlock x:Name="counterTB" Margin="532,451,32,10" TextWrapping="Wrap" />
+                    <StackPanel Height="100"/>
+                    <StackPanel Height="100"/>
+                </StackPanel>
+            </Border>
+            <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBox Name="SearchBox" Height="30" Margin="55,0,10,0" VerticalAlignment="Top" Width="330"/>
+                    <Button x:Name="SearchButton" Content="Поиск" Height="25" VerticalAlignment="Top" Click="SearchButton_Click" Width="123"/>
+                </StackPanel>
+                <StackPanel Height="430">
+                    <ListView Name="TracksList" Margin="0,10,0,0" Height="370" Width="506">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="5">
+                                    <Image Source="{Binding CoverUrl}" Width="50" Height="50" Margin="5"/>
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
+                                        <TextBlock Text="{Binding Artist}" FontStyle="Italic"/>
+                                        <TextBlock Text="{Binding Duration}" Foreground="Gray"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <TextBlock x:Name="counterTB" Margin="200,5,0,0" TextWrapping="Wrap" Height="31" Width="295" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Page>
