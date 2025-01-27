@@ -16,8 +16,9 @@
                         <TextBlock x:Name="usernameTb" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36"><Run Text=""/></TextBlock>
                     </StackPanel>
                     <StackPanel Height="146">
-                        <Button x:Name="btnFav" Content="Favourite" Margin="15,0,0,0" Width="159" Height="55" Click="btnFav_Click"/>
-                        <Button x:Name="btnPlaylists" Content="Playlists" Margin="15,30,0,0" Width="159" Height="55"/>
+                        <Button x:Name="btnFav" Content="Favorite" Margin="15,0,0,0" Width="159" Height="30" Click="btnFav_Click"/>
+                        <Button x:Name="btnMain" Content="Main" Margin="15,25,0,0" Width="159" Height="30" Click="btnMain_Click"/>
+                        <Button x:Name="btnPlaylists" Content="Playlists" Margin="15,25,0,0" Width="159" Height="30" Click="btnPlaylists_Click"/>
                     </StackPanel>
                     <StackPanel Height="100">
                         <Button x:Name="btnExit" Content="Exit" Margin="105,50,0,0" Width="87" Height="43" Click="btnExit_Click"/>

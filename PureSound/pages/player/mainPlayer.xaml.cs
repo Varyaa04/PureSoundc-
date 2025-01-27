@@ -31,8 +31,6 @@ namespace PureSound.pages.player
         public mainPlayer()
         {
             InitializeComponent();
-
-           
             TracksList.ItemsSource = Tracks;
             LoadTracks();
 
@@ -166,34 +164,34 @@ namespace PureSound.pages.player
         {
             try
             {
-                TracksList.ItemsSource = Tracks;
-                int idUsers = Convert.ToInt32(App.Current.Properties["idUser"]);
                 Button b = sender as Button;
                 string ID = Convert.ToString(float.Parse(((b.Parent as StackPanel).Children[0] as TextBlock).Text));
-                var fav = pureSoundEntities.GetContext().tableFavourite.FirstOrDefault(o => o.idUser == idUsers);
-                if (ID == fav.favTracks.ToString())
+
+                int idUsers = Convert.ToInt32(App.Current.Properties["idUser"]);
+
+                // Check if the track is already in the 'Избранном'
+                var existingFavorite = pureSoundEntities.GetContext().tableFavourite.FirstOrDefault(o => o.idUser == idUsers && o.idTrack == ID);
+
+                if (existingFavorite != null)
                 {
                     MessageBox.Show("Данный трек уже в 'Избранном'!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
-                    if (fav == null)
+                    // Add the track to the 'Избранном'
+                    var newFavorite = new tableFavourite()
                     {
-                        fav = new tableFavourite()
-                        {
-                            idUser = idUsers,
-                            idTrack = ID,
-                        };
-                        pureSoundEntities.GetContext().tableFavourite.Add(fav);
-                        pureSoundEntities.GetContext().SaveChanges();
-                    }
-
+                        idUser = idUsers,
+                        idTrack = ID,
+                    };
+                    pureSoundEntities.GetContext().tableFavourite.Add(newFavorite);
+                    pureSoundEntities.GetContext().SaveChanges();
 
                     MessageBox.Show("успешно добавлен!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                     AppFrame.frame.Navigate(new mainPlayer());
                 }
-              
             }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла ошибка: " + ex.ToString(), "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);

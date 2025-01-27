@@ -48,5 +48,15 @@ namespace PureSound.pages.player
                 this.Close();
             }
         }
+
+        private void btnPlaylists_Click(object sender, RoutedEventArgs e)
+        {
+            AppFramePl.frame.Navigate(new playlistsPage());
+        }
+
+        private void btnMain_Click(object sender, RoutedEventArgs e)
+        {
+            AppFramePl.frame.Navigate(new mainPlayer());
+        }
     }
 }

@@ -17,7 +17,7 @@
                 </StackPanel>
                 <StackPanel Height="430">
                     <ListView x:Name="TracksList" Margin="30,10,0,0" Height="370" Width="506">
-                        <ListView.ItemTemplate>
+                        <ListView.ItemTemplate> 
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Margin="5">
                                     <TextBlock Text="{Binding Id}" FontWeight="Bold" Visibility="Hidden"/>

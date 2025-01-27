@@ -11,28 +11,31 @@
     <Grid Background="#FFA1F2FF">
         <StackPanel Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
+                <TextBlock Text="Favorite" HorizontalAlignment="Center" FontFamily="Baskerville Old Face" FontSize="24"/>
                 <StackPanel Orientation="Horizontal">
                     <TextBox x:Name="SearchBox" Height="30" Margin="55,0,10,0" VerticalAlignment="Top" Width="330"/>
                     <Button x:Name="SearchButton" Content="Поиск" Height="25" VerticalAlignment="Top" Click="SearchButton_Click" Width="123"/>
                 </StackPanel>
                 <StackPanel Height="430">
-                    <ListView x:Name="TracksList" Margin="30,10,0,0" Height="370" Width="506">
+                    <ListView x:Name="TracksList" ItemsSource="{Binding Tracks}" Height="298">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="5">
-                                    <TextBlock Text="{Binding Id}" FontWeight="Bold" Visibility="Hidden"/>
-                                    <Image Source="{Binding CoverUrl}" Width="50" Height="50" Margin="5"/>
-                                    <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Image Source="{Binding CoverUrl}" Width="50" Height="50"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding Artist}" FontStyle="Italic"/>
-                                        <TextBlock Text="{Binding Duration}" Foreground="Gray"/>
+                                        <TextBlock Text="{Binding Artist}"/>
+                                        <TextBlock Text="{Binding Duration}"/>
                                     </StackPanel>
-                                    <Button x:Name="btnFav" Content="+" FontWeight="Bold" Margin="100,0,0,0" Height="20" Width="20" Click="btnFav_Click"/>
-                                </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    <TextBlock x:Name="counterTB" Margin="200,5,0,0" TextWrapping="Wrap" Height="31" Width="295" />
+                    <TextBlock x:Name="counterTB" Margin="200,3,0,0" TextWrapping="Wrap" Height="31" Width="295" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>
