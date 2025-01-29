@@ -13,22 +13,29 @@
             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
                 <StackPanel Orientation="Horizontal">
                     <TextBox x:Name="SearchBox" Height="30" Margin="55,0,10,0" VerticalAlignment="Top" Width="330"/>
-                    <Button x:Name="SearchButton" Content="Поиск" Height="25" VerticalAlignment="Top" Click="SearchButton_Click" Width="123"/>
+                    <Button x:Name="SearchButton" Content="Поиск" Height="25" VerticalAlignment="Top" Click="SearchButton_Click" Width="55"/>
+                    <Button x:Name="ResetButton" Content="Сброс" Height="25" VerticalAlignment="Top" Click="ResetButton_Click" Width="78"/>
                 </StackPanel>
                 <StackPanel Height="430">
-                    <ListView x:Name="TracksList" Margin="30,10,0,0" Height="370" Width="506">
-                        <ListView.ItemTemplate> 
+                    <ListView x:Name="TracksList" ItemsSource="{Binding Tracks}" Height="298">
+                        <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Margin="5">
-                                    <TextBlock Text="{Binding Id}" FontWeight="Bold" Visibility="Hidden"/>
-                                    <Image Source="{Binding CoverUrl}" Width="50" Height="50" Margin="5"/>
-                                    <StackPanel>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <StackPanel Orientation="Horizontal"  >
+                                        <TextBlock Text="{Binding Id}" Visibility="Hidden"/>
+                                        <Image Source="{Binding CoverUrl}" Width="50" Height="50" Margin="-50,0,0,0"/>
+                                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
                                         <TextBlock Text="{Binding Title}" FontWeight="Bold"/>
-                                        <TextBlock Text="{Binding Artist}" FontStyle="Italic"/>
-                                        <TextBlock Text="{Binding Duration}" Foreground="Gray"/>
+                                        <TextBlock Text="{Binding Artist}"/>
+                                        <TextBlock Text="{Binding Duration}"/>
                                     </StackPanel>
-                                    <Button x:Name="btnFav" Content="+" FontWeight="Bold" Margin="100,0,0,0" Height="20" Width="20" Click="btnFav_Click"/>
-                                </StackPanel>
+                                        <Button Content="+" Name="btnFav" Click="btnFav_Click" Width="30" Height="30" HorizontalAlignment="left" Margin="100,0,0,0"/>
+                                    </StackPanel>
+                                </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>

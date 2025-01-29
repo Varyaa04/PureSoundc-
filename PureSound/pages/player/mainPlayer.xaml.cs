@@ -21,7 +21,7 @@ using static NuGet.Packaging.PackagingConstants;
 
 namespace PureSound.pages.player
 {
-    /// <summary>
+    /// <summary>   
     /// Логика взаимодействия для mainPlayer.xaml
     /// </summary>
     public partial class mainPlayer : Page
@@ -54,8 +54,8 @@ namespace PureSound.pages.player
             try
             {
                 Tracks.Clear();
-                string requestUrl = DeezerApiUrl + Uri.EscapeDataString(query);
-
+                string DeezerApiUrlSearch = "https://api.deezer.com/search?q="; 
+                string requestUrl = DeezerApiUrlSearch + Uri.EscapeDataString(query);
                 HttpClient client = new HttpClient();
                 HttpResponseMessage response = await client.GetAsync(requestUrl);
                 response.EnsureSuccessStatusCode();
@@ -78,6 +78,10 @@ namespace PureSound.pages.player
                 if (Tracks.Count == 0)
                 {
                     counterTB.Text = "Ничего не найдено.";
+                }
+                else
+                {
+                    counterTB.Text = "Найдено треков: " + Tracks.Count;
                 }
             }
             catch (Exception ex)
@@ -169,7 +173,6 @@ namespace PureSound.pages.player
 
                 int idUsers = Convert.ToInt32(App.Current.Properties["idUser"]);
 
-                // Check if the track is already in the 'Избранном'
                 var existingFavorite = pureSoundEntities.GetContext().tableFavourite.FirstOrDefault(o => o.idUser == idUsers && o.idTrack == ID);
 
                 if (existingFavorite != null)
@@ -178,7 +181,6 @@ namespace PureSound.pages.player
                 }
                 else
                 {
-                    // Add the track to the 'Избранном'
                     var newFavorite = new tableFavourite()
                     {
                         idUser = idUsers,
@@ -201,7 +203,11 @@ namespace PureSound.pages.player
         private void TracksList_Selected(object sender, RoutedEventArgs e)
         {
         }
-       
+
+        private void ResetButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadTracks();
+        }
     }
 }
 
