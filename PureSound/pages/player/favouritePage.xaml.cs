@@ -17,6 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PureSound.Properties; 
 
 namespace PureSound.pages.player
 {
@@ -25,142 +26,93 @@ namespace PureSound.pages.player
     /// </summary>
     public partial class favouritePage : Page
     {
-        private const string DeezerApiUrl = "https://api.deezer.com/chart/0/tracks";
+        private const string DeezerApiUrl = "https://api.deezer.com/search?q=";
         public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
+        private int userId = Convert.ToInt32(App.Current.Properties["idUser"]);
 
-
-        private async Task<IEnumerable<string>> GetFavoriteTrackIdsAsync()
-        {
-            return await pureSoundEntities.GetContext().tableFavourite  .Select(t => t.idTrack).ToListAsync();
-        }
+        private pureSoundEntities _dbContext;
 
 
         public favouritePage()
         {
             InitializeComponent();
+            _dbContext = new pureSoundEntities();
             LoadFavoriteTracks();
-
 
         }
 
-        private async Task LoadFavoriteTracks()
+        public async Task LoadFavoriteTracks()
         {
-            try
+            Console.WriteLine(userId);
+            if (_dbContext != null)
             {
-                var favoriteTrackIds = await GetFavoriteTrackIdsAsync();
+                List<tableFavourite> favoriteTracks = _dbContext.tableFavourite.Where(f => f.idUser == userId).ToList();
+                Console.WriteLine(favoriteTracks.Count);
+
+                if (favoriteTracks.Count == 0)
+                {
+                    counterTB.Text = "Нет любимых треков.";
+                    return;
+                }
 
                 using (HttpClient client = new HttpClient())
                 {
-                    string jsonResponse = await client.GetStringAsync("https://api.deezer.com/track/");
-                    var allTracks = JsonConvert.DeserializeObject<DeezerTrack[]>(jsonResponse).Where(t => favoriteTrackIds.Contains(t.Id));
+                    string apiUr = "https://api.deezer.com/search?q=";
+                    string ids = string.Join(",", favoriteTracks.Select(f => f.idTrack));
+                    string apiUrl = $"{apiUr}={ids}";
 
-                    var tracks = new ObservableCollection<Track>(allTracks.Select(t => new Track
+                    try
                     {
-                        Id = t.Id,
-                        Title = t.Title,
-                        Artist = t.Artist?.Name ?? "Unknown Artist",
-                        Duration = FormatDuration(t.Duration),
-                        CoverUrl = t.Album?.CoverMedium ?? "https://via.placeholder.com/150"
-                    }));
+                        string jsonResponse = await client.GetStringAsync(apiUrl);
+                        Console.WriteLine(jsonResponse);
 
-                    Dispatcher.Invoke(() =>
+                        if (string.IsNullOrEmpty(jsonResponse) || jsonResponse == "{\"data\":[],\"total\":0}")
+                        {
+                            counterTB.Text = "Нет любимых треков.";
+                            return;
+                        }
+
+                        var result = JsonConvert.DeserializeObject<List<DeezerTrack>>(jsonResponse);
+
+                        Tracks.Clear();
+                        foreach (var item in result)
+                        {
+                            if (item == null)
+                            {
+                                continue;
+                            }
+
+                            Tracks.Add(new Track
+                            {
+                                Id = item.Id,
+                                Title = item.Title,
+                                Artist = item.Artist.Name,
+                                Duration = FormatDuration(item.Duration), 
+                                CoverUrl = item.Album!= null? item.Album.CoverMedium : null });
+                            }
+
+                        counterTB.Text = $"Загружено любимых треков: {Tracks.Count}";
+                    }
+                    catch (HttpRequestException ex)
                     {
-                        TracksList.ItemsSource = tracks;
-                        counterTB.Text = "Загружено треков: " + tracks.Count;
-                    });
+                        Console.WriteLine("\nException Caught!");
+                        Console.WriteLine("Message: {0}", ex.Message);
+                        MessageBox.Show("Ошибка при загрузке любимых треков. Пожалуйста, попробуйте позже.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
                 }
             }
-            catch (Exception ex)
+            else
             {
-                MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Database context is null.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
             }
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            string query = SearchBox.Text.Trim();
-            if (!string.IsNullOrEmpty(query))
-            {
-                await SearchTracksAsync(query);
-            }
-            else
-            {
-                MessageBox.Show("Введите название песни или исполнителя.", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            
         }
 
-
-        private async Task SearchTracksAsync(string query)
-        {
-            //try
-            //{
-            //    using (HttpClient client = new HttpClient())
-            //    {
-            //        string jsonResponse = await client.GetStringAsync(DeezerApiUrl);
-
-            //        Console.WriteLine(jsonResponse);
-
-
-            //        var result = JsonConvert.DeserializeObject<DeezerResponse>(jsonResponse);
-
-            //        Tracks.Clear();
-            //        foreach (var item in result.Data)
-            //        {
-            //            Tracks.Add(new Track
-            //            {
-            //                Id = item.Id,
-            //                Title = item.Title,
-            //                Artist = item.Artist.Name,
-            //                Duration = TimeSpan.FromSeconds(item.Duration).ToString(@"mm\:ss"),
-            //                CoverUrl = item.Album.CoverMedium
-            //            });
-            //        }
-
-            //        counterTB.Text = "Загружено треков: " + Tracks.Count;
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"Ошибка при загрузке данных: {ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-            //}
-        }
-
-        //private async void LoadTracks()
-        //{
-        //    try
-        //    {
-        //        using (var context = new pureSoundEntities())
-        //        {
-        //            var favoriteIds = context.tableFavourite.Select(f => f.idTrack).ToList();
-
-        //            foreach (var id in favoriteIds)
-        //            {
-        //                using (HttpClient client = new HttpClient())
-        //                {
-        //                    string trackUrl = $"https://api.deezer.com/track/{id}";
-        //                    string jsonResponse = await client.GetStringAsync(trackUrl);
-
-        //                    var result = JsonConvert.DeserializeObject<DeezerTrack>(jsonResponse);
-
-        //                    FavoriteTracks.Add(new Track
-        //                    {
-        //                        Id = result.Id,
-        //                        Title = result.Title,
-        //                        Artist = result.Artist.Name,
-        //                        Duration = FormatDuration(result.Duration),
-        //                        CoverUrl = result.Album.CoverMedium
-        //                    });
-        //                }
-        //            }
-
-        //            counterTB.Text = "Загружено треков: " + FavoriteTracks.Count;
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"Ошибка загрузки данных: {ex.Message}", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
-        //    }
-        //}
 
         private string FormatDuration(int durationInSeconds)
         {
@@ -168,43 +120,55 @@ namespace PureSound.pages.player
             return time.ToString(@"mm\:ss");
         }
 
-        public class Track
+       
+        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            public string Id { get; set; }
-            public string Title { get; set; }
-            public string Artist { get; set; }
-            public string Duration { get; set; }
-            public string CoverUrl { get; set; }
+            string query = SearchBox.Text.Trim();
+            if (!string.IsNullOrEmpty(query))
+            {
+                //await SearchTracksAsync(query);
+            }
         }
 
-        public class DeezerResponse
+        private void btndel_Click(object sender, RoutedEventArgs e)
         {
-            public DeezerTrack[] Data { get; set; }
+
         }
-
-        public class DeezerTrack
-        {
-            public string Id { get; set; }
-            public string Title { get; set; }
-            public int Duration { get; set; }
-            public DeezerArtist Artist { get; set; }
-            public DeezerAlbum Album { get; set; }
-        }
-
-        public class DeezerArtist
-        {
-            public string Name { get; set; }
-        }
-
-        public class DeezerAlbum
-        {
-            [JsonProperty("cover_medium")]
-            public string CoverMedium { get; set; }
-        }
-
-      
-
-
     }
+
+    public class Track
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public string Artist { get; set; }
+        public string Duration { get; set; }
+        public string CoverUrl { get; set; }
+    }
+
+    public class DeezerResponse
+    {
+        public DeezerTrack[] Data { get; set; }
+    }
+
+    public class DeezerTrack
+    {
+        public string Id { get; set; }
+        public string Title { get; set; }
+        public int Duration { get; set; }
+        public DeezerArtist Artist { get; set; }
+        public DeezerAlbum Album { get; set; }
+    }
+
+    public class DeezerArtist
+    {
+        public string Name { get; set; }
+    }
+
+    public class DeezerAlbum
+    {
+        [JsonProperty("cover_medium")]
+        public string CoverMedium { get; set; }
+    }
+
 }
 

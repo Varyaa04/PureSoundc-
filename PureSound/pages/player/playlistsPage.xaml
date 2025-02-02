@@ -7,15 +7,31 @@
       mc:Ignorable="d" 
       Title="playlistsPage"
       d:DesignHeight="485" d:DesignWidth="560">
-    
+
     <Grid Background="#FFA1F2FF">
         <StackPanel Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
                 <TextBlock Text="Playlists" HorizontalAlignment="Center" FontFamily="Baskerville Old Face" FontSize="24"/>
+                <Button x:Name="btnAdd" Content="+" Height="30" Width="30" HorizontalAlignment="Right" Margin="0,-25,0,0" Click="btnAdd_Click"/>
                 <StackPanel Orientation="Horizontal"/>
                 <StackPanel Height="430">
                     <TextBlock x:Name="counterTB" Margin="200,3,0,0" TextWrapping="Wrap" Height="31" Width="295" />
-                    <Label Content="Нет плейлистов" FontSize="30" HorizontalAlignment="Center"/>
+                    <Label x:Name="nullL" Content="Нет плейлистов" FontSize="30" HorizontalAlignment="Center"/>
+                    <Button x:Name="btnAddNull" Content="+" Height="100" Width="100" Click="btnAddNull_Click"/>
+                    <ListView x:Name="playlistList" HorizontalAlignment="Left" Height="344" Width="490" Margin="0,-180,0,0">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button x:Name="playlistBtn" Grid.Column="0" Width="50" Height="20" Click="playlistBtn_Click">hear</Button>
+                                    <TextBlock Grid.Column="1" Width="Auto" Text="{Binding namePlaylist}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

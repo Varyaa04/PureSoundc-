@@ -26,7 +26,7 @@ namespace PureSound.pages.player
     /// </summary>
     public partial class mainPlayer : Page
     {
-        private const string DeezerApiUrl = "https://api.deezer.com/chart/0/tracks";
+        private const string DeezerApiUrl = "https://api.deezer.com/chart/0/tracks?limit=100";
         public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
         public mainPlayer()
         {
@@ -206,6 +206,7 @@ namespace PureSound.pages.player
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
+            SearchBox.Text = "";
             LoadTracks();
         }
     }

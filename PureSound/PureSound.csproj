@@ -2,6 +2,9 @@
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
+    <LangVersion Condition="'$(MSBuildProjectExtension)'=='.csproj'">preview</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{FD775DE8-C205-422A-8B11-710DA0405F60}</ProjectGuid>
@@ -176,6 +179,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="pages\player\addPlaylists.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="pages\player\favouritePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +206,9 @@
     </Compile>
     <Compile Include="pages\auth\registration.xaml.cs">
       <DependentUpon>registration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="pages\player\addPlaylists.xaml.cs">
+      <DependentUpon>addPlaylists.xaml</DependentUpon>
     </Compile>
     <Compile Include="pages\player\favouritePage.xaml.cs">
       <DependentUpon>favouritePage.xaml</DependentUpon>

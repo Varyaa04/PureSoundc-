@@ -1,0 +1,13 @@
+﻿<Window x:Class="PureSound.pages.player.addPlaylists"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PureSound.pages.player"
+        mc:Ignorable="d"
+        Title="Создать плейлист" Height="350" Width="500">
+    <Grid>
+        <TextBox x:Name="namePl" Margin="135,124,140,150" TextWrapping="Wrap" Text="" d:LayoutOverrides="VerticalAlignment"/>
+        <Button x:Name="addPlaylist" Content="Создать" Margin="200,204,200,90" d:LayoutOverrides="HorizontalAlignment" Click="addPlaylist_Click"/>
+    </Grid>
+</Window>
