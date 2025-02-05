@@ -11,13 +11,14 @@
         <StackPanel Orientation="Horizontal">
             <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Background="#FFB3EFF9">
                 <StackPanel>
-                    <StackPanel Height="100" Orientation="Horizontal" Margin="0,40,0,0" >
-                        <Button x:Name="profileSee" Width="81" Height="84" Margin="25,0,0,0" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="profileSee_Click" >
+                    <StackPanel Height="100" Orientation="Horizontal" Margin="0,40,0,0">
+                        <TextBlock x:Name="tbId" Text="{Binding idUser}" Visibility="Hidden" Width="0" Height="0"/>
+                        <Button x:Name="profileSee" Width="81" Height="84" Margin="25,0,0,0" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="profileSee_Click">
                             <Button.Background>
                                 <ImageBrush ImageSource="/pages/player/profile.png"/>
                             </Button.Background>
                         </Button>
-                        <TextBlock x:Name="usernameTb" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36"><Run Text=""/></TextBlock>
+                        <TextBlock x:Name="usernameTb" Text="{Binding userName}" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36"/>
                     </StackPanel>
                     <StackPanel Height="146">
                         <Button x:Name="btnFav" Content="Favorite" Margin="15,0,0,0" Width="159" Height="30" Click="btnFav_Click" Background="#FFC1EBFC"/>

@@ -20,29 +20,30 @@
                 <StackPanel Height="100" Orientation="Horizontal">
                     <StackPanel Width="305">
                         <Label Content="Имя пользователя:" Width="175"/>
-                        <TextBox x:Name="tbName" TextWrapping="Wrap" Text="{Binding userName}"  Width="120"/>
+                        <TextBox x:Name="tbName" TextWrapping="Wrap"   Width="120"/>
                     </StackPanel>
                     <StackPanel Width="305">
                         <Label Content="Логин:" Width="175"/>
-                        <TextBox x:Name="tbLogin" TextWrapping="Wrap" Text="{Binding userLogin}" Width="120"/>
+                        <TextBox x:Name="tbLogin" TextWrapping="Wrap"  Width="120"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Height="100" Orientation="Horizontal">
                     <StackPanel Width="305">
                         <Label Content="Email:" Width="175"/>
-                        <TextBox x:Name="tbEmail" TextWrapping="Wrap" Text="{Binding userEmail}" Width="120"/>
+                        <TextBox x:Name="tbEmail" TextWrapping="Wrap"  Width="120"/>
                     </StackPanel>
                     <StackPanel Width="305">
                         <Label Content="Пароль:" Width="175"/>
                         <StackPanel Orientation="Horizontal" Width="212" Margin="90,0,0,0">
                             <PasswordBox x:Name="tbPassword"  Width="120" />
+                            <TextBox x:Name="tbPasswordVisible"  Width="120"  Margin="-120,0,0,0"/>
                             <CheckBox x:Name="cbSPass" Content="See" Checked="cbSPass_Checked" Unchecked="cbSPass_Unchecked"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Height="100" Orientation="Horizontal">
                     <StackPanel Width="305">
-                        <Button x:Name="btnSave" Content="Сохранить изменения" Height="35" Width="127"/>
+                        <Button x:Name="btnSave" Content="Сохранить изменения" Height="35" Width="127" Click="btnSave_Click"/>
 
                     </StackPanel>
                     <StackPanel Width="305">

@@ -21,6 +21,9 @@ namespace PureSound.pages.player
     /// </summary>
     public partial class WindowPlayer : Window
     {
+        int authId;
+        private usersTable user = new usersTable();
+
         public WindowPlayer()
         {
             InitializeComponent();
@@ -28,11 +31,30 @@ namespace PureSound.pages.player
             AppFramePl.frame = MainFrame;
             AppConn.modeldb = new pureSoundEntities();
             AppFramePl.frame.Navigate(new player.mainPlayer());
-            int authId = Convert.ToInt32(App.Current.Properties["idUser"].ToString());
-            usernameTb.Text = AppConn.modeldb.usersTable
+            if (App.Current.Properties["idUser"] == null)
+            {
+                MessageBox.Show("Ошибка: ID пользователя не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Close();
+                return;
+            }
+
+            authId = Convert.ToInt32(App.Current.Properties["idUser"].ToString());
+            user.idUser = authId;
+            DataContext = user;
+            tbId.Text = user.idUser.ToString();
+            var userName = AppConn.modeldb.usersTable
                 .Where(x => x.idUser == authId)
                 .Select(x => x.userName)
                 .FirstOrDefault();
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                MessageBox.Show("Ошибка: Имя пользователя не найдено.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                usernameTb.Text = userName;
+            }
         }
 
         private void btnFav_Click(object sender, RoutedEventArgs e)
@@ -46,7 +68,7 @@ namespace PureSound.pages.player
             {
                 MainWindow firstWindow = new MainWindow();
                 firstWindow.Show();
-                AppFrame.frame.Navigate(new auth.authorization());
+                AppFramePl.frame.Navigate(new auth.authorization());
                 this.Close();
             }
         }
@@ -63,10 +85,46 @@ namespace PureSound.pages.player
 
         private void profileSee_Click(object sender, RoutedEventArgs e)
         {
-            userProfileWindow userProfile = new userProfileWindow();
-            userProfile.Show();
-            this.Close();
+            var button = sender as Button;
+            if (button == null)
+            {
+                MessageBox.Show("Ошибка: Кнопка не найдена.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
+            var dataContext = button.DataContext;
+            if (dataContext == null)
+            {
+                MessageBox.Show("Ошибка: DataContext не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (button.Parent is StackPanel parentPanel)
+            {
+                if (parentPanel.Children[0] is TextBlock idTextBlock && int.TryParse(idTextBlock.Text, out int ID))
+                {
+                    if (dataContext is usersTable user)
+                    {
+                        user.idUser = ID; // Убедитесь, что это необходимо
+                        userProfileWindow userProfile = new userProfileWindow(user);
+                        userProfile.Show();
+                        this.Hide();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Ошибка: Данные пользователя не найдены.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Console.WriteLine($"DataContext: {dataContext}");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка: Невозможно получить ID пользователя.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Ошибка: Невозможно найти родительский StackPanel.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

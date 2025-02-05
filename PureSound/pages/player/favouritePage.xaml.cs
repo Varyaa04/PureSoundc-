@@ -28,20 +28,18 @@ namespace PureSound.pages.player
     /// </summary>
     public partial class favouritePage : Page
     {
-        private const string DeezerApiUrl = "https://api.deezer.com/search?q=id:";
-        public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
-        private int userId = Convert.ToInt32(App.Current.Properties["idUser"]);
+            private const string DeezerApiUrl = "https://api.deezer.com/track/";
+            public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
+            private int userId = Convert.ToInt32(App.Current.Properties["idUser"]);
 
-        private pureSoundEntities _dbContext;
+            private pureSoundEntities _dbContext;
 
-
-        public favouritePage()
-        {
-            InitializeComponent();
-            _dbContext = new pureSoundEntities();
-            Loaded += (sender, args) => LoadFavoriteTracks();
-
-        }
+            public favouritePage()
+            {
+                InitializeComponent();
+                _dbContext = new pureSoundEntities();
+                Loaded += (sender, args) => LoadFavoriteTracks();
+            }
 
         public async Task LoadFavoriteTracks()
         {
@@ -58,54 +56,60 @@ namespace PureSound.pages.player
 
                 using (HttpClient client = new HttpClient())
                 {
-                    string apiUrl = $"https://api.deezer.com/search?q=id:{(favoriteTracks.Select(f => f.idTrack))}";
-
-                    try
+                    foreach (var favoriteTrack in favoriteTracks)
                     {
-                        string jsonResponse = await client.GetStringAsync(apiUrl);
-                        Console.WriteLine($"JSON Response:\n{jsonResponse}");
+                        string apiUrl = $"{DeezerApiUrl}{favoriteTrack.idTrack}";
 
-                        if (string.IsNullOrEmpty(jsonResponse) || jsonResponse == "{\"data\":[],\"total\":0}")
+                        try
                         {
-                            counterTB.Text = "Нет любимых треков.";
-                            return;
-                        }
+                            string jsonResponse = await client.GetStringAsync(apiUrl);
+                            Console.WriteLine($"JSON Response:\n{jsonResponse}");
 
-                        JObject json = JObject.Parse(jsonResponse);
-                        JArray data = (JArray)json["data"];
-
-                        if (data.Count == 0)
-                        {
-                            counterTB.Text = "Нет любимых треков.";
-                            return;
-                        }
-
-                        Tracks.Clear();
-                        foreach (JObject item in data)
-                        {
-                            if (item == null)
+                            if (string.IsNullOrEmpty(jsonResponse))
                             {
                                 continue;
                             }
 
+                            JObject json = JObject.Parse(jsonResponse);
+
+                            // Проверяем, что все необходимые поля существуют
+                            if (json["id"] == null || json["title"] == null || json["artist"] == null || json["album"] == null)
+                            {
+                                Console.WriteLine("Неверный формат JSON-ответа для трека.");
+                                continue;
+                            }
+
+                            // Добавляем трек в коллекцию
                             Tracks.Add(new Track
                             {
-                                Id = (string)item["id"],
-                                Title = (string)item["title"],
-                                Artist = (string)item["artist"]["name"],
-                                Duration = FormatDuration((int)item["duration"]),
-                                CoverUrl = item["album"]["cover_medium"] != null ? (string)item["album"]["cover_medium"] : null
+                                Id = (string)json["id"],
+                                Title = (string)json["title"],
+                                Artist = (string)json["artist"]["name"],
+                                Duration = FormatDuration((int)json["duration"]),
+                                CoverUrl = (string)json["album"]["cover_medium"]
                             });
                         }
+                        catch (HttpRequestException ex)
+                        {
+                            Debug.WriteLine("\nException Caught!");
+                            Debug.WriteLine("Message: {0}", ex.Message);
+                            MessageBox.Show("Ошибка при загрузке любимых треков. Пожалуйста, попробуйте позже.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        catch (NullReferenceException ex)
+                        {
+                            Debug.WriteLine("\nNullReferenceException Caught!");
+                            Debug.WriteLine("Message: {0}", ex.Message);
+                            MessageBox.Show("Ошибка при обработке данных трека.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                        catch (Exception ex)
+                        {
+                            Debug.WriteLine("\nException Caught!");
+                            Debug.WriteLine("Message: {0}", ex.Message);
+                            MessageBox.Show("Произошла непредвиденная ошибка.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
 
-                        counterTB.Text = $"Загружено любимых треков: {Tracks.Count}";
-                    }
-                    catch (HttpRequestException ex)
-                    {
-                        Debug.WriteLine("\nException Caught!");
-                        Debug.WriteLine("Message: {0}", ex.Message);
-                        MessageBox.Show("Ошибка при загрузке любимых треков. Пожалуйста, попробуйте позже.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
+                    counterTB.Text = $"Загружено любимых треков: {Tracks.Count}";
                 }
             }
             else
@@ -116,66 +120,63 @@ namespace PureSound.pages.player
         }
 
         private async void SearchButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-
-        private string FormatDuration(int durationInSeconds)
-        {
-            TimeSpan time = TimeSpan.FromSeconds(durationInSeconds);
-            return time.ToString(@"mm\:ss");
-        }
-
-       
-        private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            string query = SearchBox.Text.Trim();
-            if (!string.IsNullOrEmpty(query))
             {
-                //await SearchTracksAsync(query);
+                // Реализуйте поиск треков, если необходимо
+            }
+
+            private string FormatDuration(int durationInSeconds)
+            {
+                TimeSpan time = TimeSpan.FromSeconds(durationInSeconds);
+                return time.ToString(@"mm\:ss");
+            }
+
+            private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
+            {
+                string query = SearchBox.Text.Trim();
+                if (!string.IsNullOrEmpty(query))
+                {
+                    //await SearchTracksAsync(query);
+                }
+            }
+
+            private void btndel_Click(object sender, RoutedEventArgs e)
+            {
+                // Реализуйте удаление треков, если необходимо
             }
         }
 
-        private void btndel_Click(object sender, RoutedEventArgs e)
+        public class Track
         {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public string Artist { get; set; }
+            public string Duration { get; set; }
+            public string CoverUrl { get; set; }
+        }
 
+        public class DeezerResponse
+        {
+            public DeezerTrack[] Data { get; set; }
+        }
+
+        public class DeezerTrack
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public int Duration { get; set; }
+            public DeezerArtist Artist { get; set; }
+            public DeezerAlbum Album { get; set; }
+        }
+
+        public class DeezerArtist
+        {
+            public string Name { get; set; }
+        }
+
+        public class DeezerAlbum
+        {
+            [JsonProperty("cover_medium")]
+            public string CoverMedium { get; set; }
         }
     }
-
-    public class Track
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Artist { get; set; }
-        public string Duration { get; set; }
-        public string CoverUrl { get; set; }
-    }
-
-    public class DeezerResponse
-    {
-        public DeezerTrack[] Data { get; set; }
-    }
-
-    public class DeezerTrack
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public int Duration { get; set; }
-        public DeezerArtist Artist { get; set; }
-        public DeezerAlbum Album { get; set; }
-    }
-
-    public class DeezerArtist
-    {
-        public string Name { get; set; }
-    }
-
-    public class DeezerAlbum
-    {
-        [JsonProperty("cover_medium")]
-        public string CoverMedium { get; set; }
-    }
-
-}
 

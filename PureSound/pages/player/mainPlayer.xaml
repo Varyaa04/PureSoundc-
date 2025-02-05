@@ -17,7 +17,7 @@
                     <Button x:Name="ResetButton" Content="Сброс" Height="25" VerticalAlignment="Top" Click="ResetButton_Click" Width="78"/>
                 </StackPanel>
                 <StackPanel Height="430">
-                    <ListView x:Name="TracksList" ItemsSource="{Binding Tracks}" Height="298">
+                    <ListView x:Name="TracksList" Height="298">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>

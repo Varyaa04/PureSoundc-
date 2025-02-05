@@ -38,34 +38,32 @@ namespace PureSound.pages.auth
         {
             try
             {
-                var password = AppConn.modeldb.usersTable.FirstOrDefault(x => x.userPassword == passtxt.Password);
-                var login = AppConn.modeldb.usersTable.FirstOrDefault(x => x.userLogin == logtxt.Text);
-                var userObj = AppConn.modeldb.usersTable.FirstOrDefault(x => x.userLogin == logtxt.Text && x.userPassword == passtxt.Password);
-                if (password == null)
+                // Проверка на пустые поля
+                if (string.IsNullOrEmpty(logtxt.Text) || string.IsNullOrEmpty(passtxt.Password))
                 {
-                    MessageBox.Show("Неверный пароль",
-                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Введите логин и пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
                 }
-                else if (userObj == null)
+
+                // Поиск пользователя в базе данных
+                var userObj = AppConn.modeldb.usersTable.FirstOrDefault(x => x.userLogin == logtxt.Text && x.userPassword == passtxt.Password);
+                if (userObj == null)
                 {
-                    MessageBox.Show("Такого пользователя не существует!", "Ошибка авторизации!",
-                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Неверный логин или пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    MessageBox.Show("Здравствуйте, " + userObj.userName + "!",
-                                "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Здравствуйте, " + userObj.userName + "!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
                     App.Current.Properties["idUser"] = userObj.idUser;
                     WindowPlayer secondWindow = new WindowPlayer();
                     secondWindow.Show();
                     Application.Current.MainWindow.Close();
-
                 }
             }
             catch (Exception Ex)
             {
-                MessageBox.Show("Ошибка " + Ex.Message.ToString() + " Критическая работа приложения!",
-                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Ошибка " + Ex.Message.ToString() + " Критическая работа приложения!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Console.WriteLine($"Ошибка: {Ex.Message}\n{Ex.StackTrace}");
             }
         }
     }

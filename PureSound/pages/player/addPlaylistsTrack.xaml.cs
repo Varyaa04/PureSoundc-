@@ -23,30 +23,59 @@ namespace PureSound.pages.player
     public partial class addPlaylistsTrack : Window
     {
         int authId = Convert.ToInt32(App.Current.Properties["idUser"].ToString());
-        public addPlaylistsTrack()
+        private mainPlayer.Track tracks = new mainPlayer.Track();
+
+        public addPlaylistsTrack(mainPlayer.Track track)
         {
             InitializeComponent();
-            MessageBox.Show("Received ID: " + ReceivedId);
-            cbPlaylists.ItemsSource = pureSoundEntities.GetContext().playlistsTable.Where(x => x.idUser == authId).Select(x => x.namePlaylist).ToList();
+            if(track != null)
+            {
+                tracks = track;
+            }
+            DataContext = track;
+            ReceivedId = tracks.Id;
+            Console.WriteLine("Received ID: " + ReceivedId);
+            cbPlaylists.ItemsSource = pureSoundEntities.GetContext().
+                playlistsTable.Where(x => x.idUser == authId).
+                Select(x => x.namePlaylist).ToArray();
         }
+            
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Button b = sender as Button;
-                int ID = Convert.ToInt32(float.Parse(((b.Parent as StackPanel).Children[0] as TextBlock).Text));
-                new playlistTracksTable()
+                if (string.IsNullOrEmpty(cbPlaylists.Text))
                 {
-                   idPlaylist = cbPlaylists.SelectedIndex,
-                   idPlTracks = ID
+                    MessageBox.Show("Выберите плейлист!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                int idPlaylist = AppConn.modeldb.playlistsTable
+                    .Where(x => x.namePlaylist == cbPlaylists.Text && x.idUser == authId)
+                    .Select(x => x.idPlaylist)
+                    .FirstOrDefault();
+
+                if (idPlaylist == 0)
+                {
+                    MessageBox.Show("Плейлист не найден!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                var newPlaylistTrack = new playlistTracksTable()
+                {
+                    idPlaylist = idPlaylist,
+                    idTracks = ReceivedId
                 };
+
+                AppConn.modeldb.playlistTracksTable.Add(newPlaylistTrack);
                 AppConn.modeldb.SaveChanges();
+
                 MessageBox.Show("Песня успешно добавлена!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Ошибка при добавлении: " + ex.Message, "Ошибка!", MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show("Ошибка при добавлении: " + ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         public string ReceivedId { get; set; }

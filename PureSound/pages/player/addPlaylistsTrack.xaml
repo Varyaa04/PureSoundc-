@@ -8,9 +8,9 @@
         Title="Выберите плейлист" Height="170" Width="385">
     <Grid>
         <StackPanel>
-            <TextBlock Text="{Binding Id}" Visibility="Hidden"/>
+            <TextBlock Text="{Binding Id}" Visibility="Hidden" Height="0" Width="0"/>
             <Label Content="Выберите плейлист:" Margin="0,10,0,0" HorizontalAlignment="Center"/>
-            <ComboBox x:Name="cbPlaylists" Height="30" Margin="15,10,0,0" Width="235" SelectedItem="{Binding namePlaylist}"/>
+            <ComboBox x:Name="cbPlaylists" Height="30" Margin="15,10,0,0" Width="235" ItemsSource="{Binding namePlaylist}"/>
             <Button x:Name="btnAdd" Content="Добавить" Height="24" Width="99" Margin="0,30,0,0" Click="btnAdd_Click"/>
         </StackPanel>
     </Grid>

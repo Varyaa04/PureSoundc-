@@ -212,7 +212,7 @@ namespace PureSound.pages.player
 
         private void btnPlaylist_Click(object sender, RoutedEventArgs e)
         {
-            addPlaylistsTrack secondWindow = new addPlaylistsTrack();
+            addPlaylistsTrack secondWindow = new addPlaylistsTrack( (sender as Button).DataContext as Track);
             secondWindow.Show();
         }
     }
