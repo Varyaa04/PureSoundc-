@@ -209,6 +209,12 @@ namespace PureSound.pages.player
             SearchBox.Text = "";
             LoadTracks();
         }
+
+        private void btnPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            addPlaylistsTrack secondWindow = new addPlaylistsTrack();
+            secondWindow.Show();
+        }
     }
 }
 

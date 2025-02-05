@@ -28,6 +28,8 @@ namespace PureSound.pages.auth
             tbname.MaxLength = 25;
             tblogin.MaxLength = 30;
             tbpass.MaxLength = 30;
+            tbrepass.PasswordChar = '☭';
+
         }
 
         private void btnback_Click(object sender, RoutedEventArgs e)

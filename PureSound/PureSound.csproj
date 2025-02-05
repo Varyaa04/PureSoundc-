@@ -183,6 +183,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="pages\player\addPlaylistsTrack.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="pages\player\favouritePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -199,6 +203,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="pages\userprofile\userProfileWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="pages\auth\authorization.xaml.cs">
@@ -209,6 +217,9 @@
     </Compile>
     <Compile Include="pages\player\addPlaylists.xaml.cs">
       <DependentUpon>addPlaylists.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="pages\player\addPlaylistsTrack.xaml.cs">
+      <DependentUpon>addPlaylistsTrack.xaml</DependentUpon>
     </Compile>
     <Compile Include="pages\player\favouritePage.xaml.cs">
       <DependentUpon>favouritePage.xaml</DependentUpon>
@@ -221,6 +232,9 @@
     </Compile>
     <Compile Include="pages\player\WindowPlayer.xaml.cs">
       <DependentUpon>WindowPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="pages\userprofile\userProfileWindow.xaml.cs">
+      <DependentUpon>userProfileWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

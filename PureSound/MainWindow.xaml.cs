@@ -24,6 +24,7 @@ namespace PureSound
         public MainWindow()
         {
             InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             AppFrame.frame = MainFrame;
             AppFrame.frame.Navigate(new pages.auth.authorization());
             AppConn.modeldb = new pureSoundEntities();

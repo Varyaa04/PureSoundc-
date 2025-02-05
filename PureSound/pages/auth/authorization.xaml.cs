@@ -26,6 +26,7 @@ namespace PureSound.pages.auth
         public authorization()
         {
             InitializeComponent();
+            passtxt.PasswordChar = '☭';
         }
 
         private void btnreg_Click(object sender, RoutedEventArgs e)

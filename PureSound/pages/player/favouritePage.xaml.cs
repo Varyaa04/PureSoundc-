@@ -8,6 +8,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Newtonsoft.Json.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -26,7 +28,7 @@ namespace PureSound.pages.player
     /// </summary>
     public partial class favouritePage : Page
     {
-        private const string DeezerApiUrl = "https://api.deezer.com/search?q=";
+        private const string DeezerApiUrl = "https://api.deezer.com/search?q=id:";
         public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
         private int userId = Convert.ToInt32(App.Current.Properties["idUser"]);
 
@@ -37,7 +39,7 @@ namespace PureSound.pages.player
         {
             InitializeComponent();
             _dbContext = new pureSoundEntities();
-            LoadFavoriteTracks();
+            Loaded += (sender, args) => LoadFavoriteTracks();
 
         }
 
@@ -47,8 +49,7 @@ namespace PureSound.pages.player
             if (_dbContext != null)
             {
                 List<tableFavourite> favoriteTracks = _dbContext.tableFavourite.Where(f => f.idUser == userId).ToList();
-                Console.WriteLine(favoriteTracks.Count);
-
+                Console.WriteLine($"Favorite tracks count: {favoriteTracks.Count}");
                 if (favoriteTracks.Count == 0)
                 {
                     counterTB.Text = "Нет любимых треков.";
@@ -57,14 +58,12 @@ namespace PureSound.pages.player
 
                 using (HttpClient client = new HttpClient())
                 {
-                    string apiUr = "https://api.deezer.com/search?q=";
-                    string ids = string.Join(",", favoriteTracks.Select(f => f.idTrack));
-                    string apiUrl = $"{apiUr}={ids}";
+                    string apiUrl = $"https://api.deezer.com/search?q=id:{(favoriteTracks.Select(f => f.idTrack))}";
 
                     try
                     {
                         string jsonResponse = await client.GetStringAsync(apiUrl);
-                        Console.WriteLine(jsonResponse);
+                        Console.WriteLine($"JSON Response:\n{jsonResponse}");
 
                         if (string.IsNullOrEmpty(jsonResponse) || jsonResponse == "{\"data\":[],\"total\":0}")
                         {
@@ -72,10 +71,17 @@ namespace PureSound.pages.player
                             return;
                         }
 
-                        var result = JsonConvert.DeserializeObject<List<DeezerTrack>>(jsonResponse);
+                        JObject json = JObject.Parse(jsonResponse);
+                        JArray data = (JArray)json["data"];
+
+                        if (data.Count == 0)
+                        {
+                            counterTB.Text = "Нет любимых треков.";
+                            return;
+                        }
 
                         Tracks.Clear();
-                        foreach (var item in result)
+                        foreach (JObject item in data)
                         {
                             if (item == null)
                             {
@@ -84,19 +90,20 @@ namespace PureSound.pages.player
 
                             Tracks.Add(new Track
                             {
-                                Id = item.Id,
-                                Title = item.Title,
-                                Artist = item.Artist.Name,
-                                Duration = FormatDuration(item.Duration), 
-                                CoverUrl = item.Album!= null? item.Album.CoverMedium : null });
-                            }
+                                Id = (string)item["id"],
+                                Title = (string)item["title"],
+                                Artist = (string)item["artist"]["name"],
+                                Duration = FormatDuration((int)item["duration"]),
+                                CoverUrl = item["album"]["cover_medium"] != null ? (string)item["album"]["cover_medium"] : null
+                            });
+                        }
 
                         counterTB.Text = $"Загружено любимых треков: {Tracks.Count}";
                     }
                     catch (HttpRequestException ex)
                     {
-                        Console.WriteLine("\nException Caught!");
-                        Console.WriteLine("Message: {0}", ex.Message);
+                        Debug.WriteLine("\nException Caught!");
+                        Debug.WriteLine("Message: {0}", ex.Message);
                         MessageBox.Show("Ошибка при загрузке любимых треков. Пожалуйста, попробуйте позже.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }

@@ -1,0 +1,17 @@
+﻿<Window x:Class="PureSound.pages.player.addPlaylistsTrack"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PureSound.pages.player"
+        mc:Ignorable="d"
+        Title="Выберите плейлист" Height="170" Width="385">
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="{Binding Id}" Visibility="Hidden"/>
+            <Label Content="Выберите плейлист:" Margin="0,10,0,0" HorizontalAlignment="Center"/>
+            <ComboBox x:Name="cbPlaylists" Height="30" Margin="15,10,0,0" Width="235" SelectedItem="{Binding namePlaylist}"/>
+            <Button x:Name="btnAdd" Content="Добавить" Height="24" Width="99" Margin="0,30,0,0" Click="btnAdd_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

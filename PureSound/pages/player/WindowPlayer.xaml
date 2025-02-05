@@ -12,16 +12,20 @@
             <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Background="#FFB3EFF9">
                 <StackPanel>
                     <StackPanel Height="100" Orientation="Horizontal" Margin="0,40,0,0" >
-                        <Image Height="84" Width="81" Margin="25,0,0,0" Source="/pages/player/profile.png"/>
+                        <Button x:Name="profileSee" Width="81" Height="84" Margin="25,0,0,0" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="profileSee_Click" >
+                            <Button.Background>
+                                <ImageBrush ImageSource="/pages/player/profile.png"/>
+                            </Button.Background>
+                        </Button>
                         <TextBlock x:Name="usernameTb" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36"><Run Text=""/></TextBlock>
                     </StackPanel>
                     <StackPanel Height="146">
-                        <Button x:Name="btnFav" Content="Favorite" Margin="15,0,0,0" Width="159" Height="30" Click="btnFav_Click"/>
-                        <Button x:Name="btnMain" Content="Main" Margin="15,25,0,0" Width="159" Height="30" Click="btnMain_Click"/>
-                        <Button x:Name="btnPlaylists" Content="Playlists" Margin="15,25,0,0" Width="159" Height="30" Click="btnPlaylists_Click"/>
+                        <Button x:Name="btnFav" Content="Favorite" Margin="15,0,0,0" Width="159" Height="30" Click="btnFav_Click" Background="#FFC1EBFC"/>
+                        <Button x:Name="btnMain" Content="Main" Margin="15,25,0,0" Width="159" Height="30" Click="btnMain_Click" Background="#FFC1EBFC"/>
+                        <Button x:Name="btnPlaylists" Content="Playlists" Margin="15,25,0,0" Width="159" Height="30" Click="btnPlaylists_Click" Background="#FFC1EBFC"/>
                     </StackPanel>
                     <StackPanel Height="100">
-                        <Button x:Name="btnExit" Content="Exit" Margin="105,50,0,0" Width="87" Height="43" Click="btnExit_Click"/>
+                        <Button x:Name="btnExit" Content="Exit" Margin="105,50,0,0" Width="87" Height="43" Click="btnExit_Click" Background="#FFC1EBFC"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

@@ -1,0 +1,60 @@
+﻿<Window x:Class="PureSound.pages.userprofile.userProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PureSound.pages.userprofile"
+        mc:Ignorable="d"
+        Title="Your profile"  Height="485" Width="850"
+        MinWidth="850" MinHeight="485" MaxWidth="850" MaxHeight="485" Background="#FFA5D6F6">
+    <Grid>
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" Margin="15,15,0,0">
+                <Button x:Name="btnBack" Content="Назад" Margin="0,0,0,0" Click="btnBack_Click" Width="98" Height="29"/>
+                <Label Content="Ваш профиль" Margin="230,0,0,0" HorizontalAlignment="Center" FontSize="26" Width="180"/>
+            </StackPanel>
+            <StackPanel Margin="50,25,0,0" Width="625">
+                <StackPanel Height="30" Orientation="Horizontal" Width="190">
+                    <CheckBox x:Name="cbEdit" Content="Изменить данные" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="19" Checked="cbEdit_Checked" Unchecked="cbEdit_Unchecked"/>
+                </StackPanel>
+                <StackPanel Height="100" Orientation="Horizontal">
+                    <StackPanel Width="305">
+                        <Label Content="Имя пользователя:" Width="175"/>
+                        <TextBox x:Name="tbName" TextWrapping="Wrap" Text="{Binding userName}"  Width="120"/>
+                    </StackPanel>
+                    <StackPanel Width="305">
+                        <Label Content="Логин:" Width="175"/>
+                        <TextBox x:Name="tbLogin" TextWrapping="Wrap" Text="{Binding userLogin}" Width="120"/>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Height="100" Orientation="Horizontal">
+                    <StackPanel Width="305">
+                        <Label Content="Email:" Width="175"/>
+                        <TextBox x:Name="tbEmail" TextWrapping="Wrap" Text="{Binding userEmail}" Width="120"/>
+                    </StackPanel>
+                    <StackPanel Width="305">
+                        <Label Content="Пароль:" Width="175"/>
+                        <StackPanel Orientation="Horizontal" Width="212" Margin="90,0,0,0">
+                            <PasswordBox x:Name="tbPassword"  Width="120" />
+                            <CheckBox x:Name="cbSPass" Content="See" Checked="cbSPass_Checked" Unchecked="cbSPass_Unchecked"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Height="100" Orientation="Horizontal">
+                    <StackPanel Width="305">
+                        <Button x:Name="btnSave" Content="Сохранить изменения" Height="35" Width="127"/>
+
+                    </StackPanel>
+                    <StackPanel Width="305">
+
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel>
+
+                </StackPanel>
+            </StackPanel>
+
+        </StackPanel>
+     
+    </Grid>
+</Window>

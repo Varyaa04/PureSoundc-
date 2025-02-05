@@ -1,4 +1,5 @@
 ﻿using PureSound.appCurr;
+using PureSound.pages.userprofile;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace PureSound.pages.player
         public WindowPlayer()
         {
             InitializeComponent();
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             AppFramePl.frame = MainFrame;
             AppConn.modeldb = new pureSoundEntities();
             AppFramePl.frame.Navigate(new player.mainPlayer());
@@ -57,6 +59,14 @@ namespace PureSound.pages.player
         private void btnMain_Click(object sender, RoutedEventArgs e)
         {
             AppFramePl.frame.Navigate(new mainPlayer());
+        }
+
+        private void profileSee_Click(object sender, RoutedEventArgs e)
+        {
+            userProfileWindow userProfile = new userProfileWindow();
+            userProfile.Show();
+            this.Close();
+
         }
     }
 }
