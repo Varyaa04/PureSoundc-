@@ -7,45 +7,100 @@
       mc:Ignorable="d" 
       Title="registration"    
       d:DesignHeight="485" d:DesignWidth="850">
-
-    <Grid Background="#FFA1F2FF">
-        <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Margin="0,0,560,0" Background="#FFB3EFF9">
-            <Label Content="REGIS" FontSize="72" Margin="29,63,34,229" FontFamily="Bahnschrift Light Condensed" d:LayoutOverrides="VerticalAlignment"/>
+    <Page.Resources>
+        <!-- Стиль для кнопок -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF64B5F6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF42A5F5"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF1E88E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+    <Grid Background="#FFE3F2FD">
+        <!-- Левая панель с текстом -->
+        <Border BorderBrush="#FF90CAF9" BorderThickness="1" Margin="0,0,560,0" Background="#FFB3EFF9">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="REGIS" FontSize="72" FontFamily="Bahnschrift Light Condensed" Foreground="#333333" Margin="0,0,0,-10"/>
+                <TextBlock Text="TRA" FontSize="72" FontFamily="Bahnschrift Light Condensed" Foreground="#333333" Margin="0,-20,0,-10"/>
+                <TextBlock Text="TION" FontSize="72" FontFamily="Bahnschrift Light Condensed" Foreground="#333333" Margin="0,-20,0,0"/>
+            </StackPanel>
         </Border>
 
-        <Label Content="TRA" FontSize="72" Margin="70,149,540,223" FontFamily="Bahnschrift Light Condensed"/>
-        <Label Content="TION" FontSize="72" Margin="130,235,535,138" FontFamily="Bahnschrift Light Condensed"/>
-        <StackPanel Margin="315,10,10,10">
-            <Button x:Name="btnback" Content="Back" FontFamily="Bahnschrift Light Condensed" FontSize="24" Background="#FFC1EBFC" BorderBrush="#FF88DFF7" Click="btnback_Click" Width="100" Margin="0,0,400,0" />
-            <StackPanel Height="347">
-                <StackPanel Height="124" Orientation="Horizontal" Margin="9,0,0,0">
-                    <StackPanel Height="100" Width="260">
-                        <Label Content="your name:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220"/>
-                        <TextBox x:Name="tbname" TextWrapping="Wrap" Width="140" FontFamily="Bahnschrift Light Condensed" FontSize="24" KeyDown="tbname_KeyDown"/>
-                    </StackPanel>
-                    <StackPanel Height="100" Width="265">
-                        <Label Content="your email:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220"/>
-                        <TextBox x:Name="tbemail" TextWrapping="Wrap"  Width="140" FontFamily="Bahnschrift Light Condensed" FontSize="24"/>
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel Height="230" Orientation="Horizontal" Margin="10,0,0,0">
-                    <StackPanel Height="100" Width="260">
-                        <Label Content="your login:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220"/>
-                        <TextBox x:Name="tblogin" TextWrapping="Wrap" Width="140" FontFamily="Bahnschrift Light Condensed" FontSize="24"/>
-                    </StackPanel>
-                    <StackPanel Height="195" Width="265">
-                        <StackPanel Height="92">
-                            <Label Content="your password:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220"/>
-                            <TextBox x:Name="tbpass" TextWrapping="Wrap" Width="140" FontFamily="Bahnschrift Light Condensed" FontSize="24" TextChanged="tbpass_TextChanged"/>
+        <!-- Правая панель с формой регистрации -->
+        <Border Background="#FFF5F5F5" Margin="315,10,10,10" CornerRadius="10" Padding="20">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="5" Color="#40000000" Opacity="0.5" BlurRadius="10"/>
+            </Border.Effect>
+            <StackPanel>
+                <!-- Кнопка "Back" -->
+                <Button x:Name="btnback" Content="Back" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="75" 
+                        Background="#FF64B5F6" Foreground="White" BorderBrush="Transparent" Margin="0,0,400,0" 
+                        Click="btnback_Click" Style="{StaticResource ModernButtonStyle}"/>
+
+                <!-- Форма регистрации -->
+                <StackPanel Height="291" Margin="0,10,0,0">
+                    <!-- Имя и Email -->
+                    <StackPanel Height="86" Orientation="Horizontal" Margin="0,0,0,20">
+                        <StackPanel Width="205">
+                            <Label Content="Your name:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Foreground="#333333"/>
+                            <TextBox x:Name="tbname" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" 
+                                     BorderBrush="#FF90CAF9" BorderThickness="1"  KeyDown="tbname_KeyDown"/>
                         </StackPanel>
-                        <StackPanel Height="83">
-                            <Label Content="repeat your password:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220"/>
-                            <PasswordBox x:Name="tbrepass" Width="140" FontFamily="Bahnschrift Light Condensed" FontSize="24" PasswordChanged="tbrepass_PasswordChanged"/>
+                        <StackPanel Width="205" Margin="20,0,0,0" >
+                            <Label Content="Your email:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Foreground="#333333"/>
+                            <TextBox x:Name="tbemail" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" 
+                                     BorderBrush="#FF90CAF9" BorderThickness="1"  />
                         </StackPanel>
                     </StackPanel>
+
+                    <!-- Логин и пароль -->
+                    <StackPanel Height="172" Orientation="Horizontal" Margin="0,0,0,0">
+                        <StackPanel Width="205" Height="157">
+                            <Label Content="Your login:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Foreground="#333333"/>
+                            <TextBox x:Name="tblogin" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" 
+                                     BorderBrush="#FF90CAF9" BorderThickness="1"  />
+                        </StackPanel>
+                        <StackPanel Width="205" Margin="20,0,0,0">
+                            <StackPanel Height="92">
+                                <Label Content="Your password:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Foreground="#333333"/>
+                                <TextBox x:Name="tbpass" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" 
+                                             BorderBrush="#FF90CAF9" BorderThickness="1"  />
+                            </StackPanel>
+                            <StackPanel Height="83">
+                                <Label Content="Repeat password:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Foreground="#333333"/>
+                                <PasswordBox x:Name="tbrepass" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" 
+                                             BorderBrush="#FF90CAF9" BorderThickness="1"  PasswordChanged="tbrepass_PasswordChanged"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
+
+                <!-- Кнопка "Create account" -->
+                <Button x:Name="btnreg" Content="Create account" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="193" 
+                        Height="40" Background="#FF64B5F6" Foreground="White" BorderBrush="Transparent" Margin="0,20,0,0" 
+                        Click="btnreg_Click" Style="{StaticResource ModernButtonStyle}"/>
             </StackPanel>
-            <Button x:Name="btnreg" Content="Create account" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220" Background="#FFC1EBFC" BorderBrush="#FF88DFF7" Click="btnreg_Click" Height="44"/>
-        </StackPanel>
+        </Border>
     </Grid>
 </Page>

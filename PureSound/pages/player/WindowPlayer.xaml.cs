@@ -105,7 +105,7 @@ namespace PureSound.pages.player
                 {
                     if (dataContext is usersTable user)
                     {
-                        user.idUser = ID; // Убедитесь, что это необходимо
+                        user.idUser = ID; 
                         userProfileWindow userProfile = new userProfileWindow(user);
                         userProfile.Show();
                         this.Hide();

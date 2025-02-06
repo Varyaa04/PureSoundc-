@@ -5,57 +5,90 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PureSound.pages.userprofile"
         mc:Ignorable="d"
-        Title="Your profile"  Height="485" Width="850"
-        MinWidth="850" MinHeight="485" MaxWidth="850" MaxHeight="485" Background="#FFA5D6F6">
+        Title="Your profile" Height="485" Width="850"
+        MinWidth="850" MinHeight="485" MaxWidth="850" MaxHeight="485" 
+        Background="#FFA5D6F6" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <!-- Стиль для кнопок -->
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#FFC1EBFC"/>
+            <Setter Property="Foreground" Value="#FF333333"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5" 
+                                BorderThickness="0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="5" ShadowDepth="2" Color="#FF888888"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid>
         <StackPanel>
+            <!-- Верхняя панель с кнопкой "Назад" и заголовком -->
             <StackPanel Orientation="Horizontal" Margin="15,15,0,0">
-                <Button x:Name="btnBack" Content="Назад" Margin="0,0,0,0" Click="btnBack_Click" Width="98" Height="29"/>
-                <Label Content="Ваш профиль" Margin="230,0,0,0" HorizontalAlignment="Center" FontSize="26" Width="180"/>
+                <Button x:Name="btnBack" Style="{StaticResource ModernButton}" Content="Назад" Width="98" Height="29" Click="btnBack_Click"/>
+                <Label Content="Ваш профиль" Margin="230,0,0,0" HorizontalAlignment="Center" FontSize="26" Width="180" Foreground="#FF333333"/>
             </StackPanel>
+
+            <!-- Основная панель с элементами управления -->
             <StackPanel Margin="50,25,0,0" Width="625">
+                <!-- Чекбокс для редактирования данных -->
                 <StackPanel Height="30" Orientation="Horizontal" Width="190">
                     <CheckBox x:Name="cbEdit" Content="Изменить данные" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="19" Checked="cbEdit_Checked" Unchecked="cbEdit_Unchecked"/>
                 </StackPanel>
+
+                <!-- Поля для ввода имени пользователя и логина -->
                 <StackPanel Height="100" Orientation="Horizontal">
                     <StackPanel Width="305">
-                        <Label Content="Имя пользователя:" Width="175"/>
-                        <TextBox x:Name="tbName" TextWrapping="Wrap"   Width="120"/>
+                        <Label Content="Имя пользователя:" Width="175" Foreground="#FF333333"/>
+                        <TextBox x:Name="tbName"  TextWrapping="Wrap" Width="120"/>
                     </StackPanel>
                     <StackPanel Width="305">
-                        <Label Content="Логин:" Width="175"/>
-                        <TextBox x:Name="tbLogin" TextWrapping="Wrap"  Width="120"/>
+                        <Label Content="Логин:" Width="175" Foreground="#FF333333"/>
+                        <TextBox x:Name="tbLogin" TextWrapping="Wrap" Width="120"/>
                     </StackPanel>
                 </StackPanel>
+
+                <!-- Поля для ввода email и пароля -->
                 <StackPanel Height="100" Orientation="Horizontal">
                     <StackPanel Width="305">
-                        <Label Content="Email:" Width="175"/>
-                        <TextBox x:Name="tbEmail" TextWrapping="Wrap"  Width="120"/>
+                        <Label Content="Email:" Width="175" Foreground="#FF333333"/>
+                        <TextBox x:Name="tbEmail" TextWrapping="Wrap" Width="120"/>
                     </StackPanel>
                     <StackPanel Width="305">
-                        <Label Content="Пароль:" Width="175"/>
+                        <Label Content="Пароль:" Width="175" Foreground="#FF333333"/>
                         <StackPanel Orientation="Horizontal" Width="212" Margin="90,0,0,0">
-                            <PasswordBox x:Name="tbPassword"  Width="120" />
-                            <TextBox x:Name="tbPasswordVisible"  Width="120"  Margin="-120,0,0,0"/>
+                            <PasswordBox x:Name="tbPassword" Width="120" />
+                            <TextBox x:Name="tbPasswordVisible" Width="120" Margin="-120,0,0,0"  Visibility="Collapsed"/>
                             <CheckBox x:Name="cbSPass" Content="See" Checked="cbSPass_Checked" Unchecked="cbSPass_Unchecked"/>
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>
+
+                <!-- Кнопка сохранения изменений -->
                 <StackPanel Height="100" Orientation="Horizontal">
-                    <StackPanel Width="305">
-                        <Button x:Name="btnSave" Content="Сохранить изменения" Height="35" Width="127" Click="btnSave_Click"/>
-
+                    <StackPanel Width="622">
+                        <Button x:Name="btnSave" Style="{StaticResource ModernButton}" Content="Сохранить изменения" Height="35" Width="174" Click="btnSave_Click"/>
                     </StackPanel>
-                    <StackPanel Width="305">
-
-                    </StackPanel>
-                </StackPanel>
-                <StackPanel>
-
                 </StackPanel>
             </StackPanel>
-
         </StackPanel>
-     
     </Grid>
 </Window>

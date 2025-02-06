@@ -145,5 +145,22 @@ namespace PureSound.pages.auth
                 e.Handled = true;
             }
         }
+
+        private void tbpass_TextChanged(object sender, RoutedEventArgs e)
+        {
+            if (tbpass.Text != tbrepass.Password || tbrepass.Password == "")
+            {
+                btnreg.IsEnabled = false;
+                tbrepass.Background = Brushes.LightCoral;
+                tbrepass.BorderBrush = Brushes.Red;
+            }
+            else
+            {
+                btnreg.IsEnabled = true;
+                tbrepass.Background = Brushes.LightGreen;
+                tbrepass.BorderBrush = Brushes.Green;
+
+            }
+        }
     }
 }

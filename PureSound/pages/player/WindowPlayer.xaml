@@ -5,32 +5,77 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PureSound.pages.player"
         mc:Ignorable="d"
-        Title="PureSound" Height="485" Width="850"
-        MinWidth="850" MinHeight="485" MaxWidth="850" MaxHeight="485">
-    <Grid>
-        <StackPanel Orientation="Horizontal">
-            <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Background="#FFB3EFF9">
-                <StackPanel>
-                    <StackPanel Height="100" Orientation="Horizontal" Margin="0,40,0,0">
-                        <TextBlock x:Name="tbId" Text="{Binding idUser}" Visibility="Hidden" Width="0" Height="0"/>
-                        <Button x:Name="profileSee" Width="81" Height="84" Margin="25,0,0,0" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="profileSee_Click">
-                            <Button.Background>
-                                <ImageBrush ImageSource="/pages/player/profile.png"/>
-                            </Button.Background>
-                        </Button>
-                        <TextBlock x:Name="usernameTb" Text="{Binding userName}" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36"/>
+        Title="PureSound" Height="485" Width="950"
+        MinWidth="850" MinHeight="485" MaxWidth="950" MaxHeight="485"  Background="Transparent">
+    <Window.Resources>
+        <!-- Стиль для кнопок -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF64B5F6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF42A5F5"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF1E88E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- Основной контейнер с тенью -->
+    <Border Background="#FFE3F2FD" Margin="0,0,0,10">
+        <Border.Effect>
+            <DropShadowEffect ShadowDepth="5" Color="#40000000" Opacity="0.5" BlurRadius="10"/>
+        </Border.Effect>
+        <Grid Margin="0,0,-55,0">
+            <StackPanel Orientation="Horizontal" Margin="0,-8,3,-10">
+                <!-- Левая панель -->
+                <Border BorderBrush="#FF90CAF9" BorderThickness="1" Background="#FFB3EFF9" CornerRadius="10,0,0,10" Height="447" Width="308">
+                    <StackPanel Margin="9,-10,0,0">
+                        <!-- Профиль пользователя -->
+                        <StackPanel Height="100" Orientation="Horizontal" Margin="20,40,0,0">
+                            <TextBlock x:Name="tbId" Text="{Binding idUser}" Visibility="Hidden" Width="0" Height="0"/>
+                            <Button x:Name="profileSee" Width="81" Height="84" Margin="25,0,0,0" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="profileSee_Click" Style="{StaticResource ModernButtonStyle}">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="/pages/player/profile.png"/>
+                                </Button.Background>
+                            </Button>
+                            <TextBlock x:Name="usernameTb" Text="{Binding userName}" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36" Foreground="#333333" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </StackPanel>
+
+                        <!-- Кнопки навигации -->
+                        <StackPanel Height="166" Margin="20,20,0,0">
+                            <Button x:Name="btnFav" Content="Favorite" Margin="0,0,0,10" Width="159" Height="40" Click="btnFav_Click" Style="{StaticResource ModernButtonStyle}"/>
+                            <Button x:Name="btnMain" Content="Main" Margin="0,10,0,10" Width="159" Height="40" Click="btnMain_Click" Style="{StaticResource ModernButtonStyle}"/>
+                            <Button x:Name="btnPlaylists" Content="Playlists" Margin="0,10,0,10" Width="159" Height="40" Click="btnPlaylists_Click" Style="{StaticResource ModernButtonStyle}"/>
+                        </StackPanel>
+
+                        <!-- Кнопка выхода -->
+                        <StackPanel Height="100" Margin="20,20,0,0">
+                            <Button x:Name="btnExit" Content="Exit" Margin="0,20,0,0" Width="159" Height="40" Click="btnExit_Click" Style="{StaticResource ModernButtonStyle}" Background="#FFE57373"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Height="146">
-                        <Button x:Name="btnFav" Content="Favorite" Margin="15,0,0,0" Width="159" Height="30" Click="btnFav_Click" Background="#FFC1EBFC"/>
-                        <Button x:Name="btnMain" Content="Main" Margin="15,25,0,0" Width="159" Height="30" Click="btnMain_Click" Background="#FFC1EBFC"/>
-                        <Button x:Name="btnPlaylists" Content="Playlists" Margin="15,25,0,0" Width="159" Height="30" Click="btnPlaylists_Click" Background="#FFC1EBFC"/>
-                    </StackPanel>
-                    <StackPanel Height="100">
-                        <Button x:Name="btnExit" Content="Exit" Margin="105,50,0,0" Width="87" Height="43" Click="btnExit_Click" Background="#FFC1EBFC"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-            <Frame x:Name="MainFrame" Content="Frame" NavigationUIVisibility="Hidden" Margin="0,0,0,0" Width="560"/>
-        </StackPanel>
-    </Grid>
+                </Border>
+
+                <!-- Основной контент -->
+                <Frame x:Name="MainFrame" Content="Frame" NavigationUIVisibility="Hidden" Margin="0" Width="642" Background="#FFF5F5F5" Height="445" />
+            </StackPanel>
+        </Grid>
+    </Border>
 </Window>

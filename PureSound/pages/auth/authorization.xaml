@@ -7,27 +7,76 @@
       mc:Ignorable="d" 
       d:DesignHeight="485" d:DesignWidth="850"
       Title="authorization">
+    <Page.Resources>
+        <!-- Стиль для кнопок -->
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF64B5F6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF42A5F5"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF1E88E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-    <Grid Background="#FFA1F2FF">
-        <Border BorderBrush="#FFA5D6F6" BorderThickness="1" Margin="0,0,560,0" Background="#FFB3EFF9">
-            <Label Content="AUTHOR" FontSize="72" Margin="29,63,34,254" FontFamily="Bahnschrift Light Condensed"/>
+    </Page.Resources>
+    <Grid Background="#FFE3F2FD">
+        <Border BorderBrush="#FF90CAF9" BorderThickness="1" Background="#FFB3EFF9" Margin="0,0,560,0">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="AUTHOR" FontSize="72" FontFamily="Bahnschrift Light Condensed" Foreground="#333333" Margin="0,0,0,-10"/>
+                <TextBlock Text="ORIZA" FontSize="72" FontFamily="Bahnschrift Light Condensed" Foreground="#333333" Margin="0,-20,0,-10"/>
+                <TextBlock Text="TION" FontSize="72" FontFamily="Bahnschrift Light Condensed" Foreground="#333333" Margin="0,-20,0,0"/>
+            </StackPanel>
         </Border>
 
-        <Label Content="ORIZA" FontSize="72" Margin="70,149,540,223" FontFamily="Bahnschrift Light Condensed"/>
-        <Label Content="TION" FontSize="72" Margin="130,235,535,138" FontFamily="Bahnschrift Light Condensed"/>
-        <StackPanel Margin="315,46,10,50">
-            <StackPanel Height="268">
-                <StackPanel Height="148">
-                    <Label Content="login:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="280" Margin="0,35,0,15"/>
-                    <TextBox x:Name="logtxt" TextWrapping="Wrap" Width="163" FontFamily="Bahnschrift Light Condensed" FontSize="24" Height="29"/>
+        <!-- Правая панель с формой авторизации -->
+        <Border Background="#FFF5F5F5" Margin="315,46,30,80" CornerRadius="10" Padding="20">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="5" Color="#40000000" Opacity="0.5" BlurRadius="10"/>
+            </Border.Effect>
+            <StackPanel>
+                <!-- Поле для логина -->
+                <StackPanel Margin="0,10,0,20">
+                    <Label Content="Login:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Foreground="#333333"/>
+                    <TextBox x:Name="logtxt" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" Foreground="Black"
+                             BorderBrush="#FF90CAF9" BorderThickness="1" />
                 </StackPanel>
-                <StackPanel Height="120">
-                    <Label Content="password:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="280" Margin="0,20,0,0"/>
-                    <PasswordBox x:Name="passtxt" Width="163" FontFamily="Bahnschrift Light Condensed" FontSize="24" Height="29"/>
+
+                <!-- Поле для пароля -->
+                <StackPanel Margin="0,10,0,20">
+                    <Label Content="Password:" FontFamily="Bahnschrift Light Condensed" FontSize="24" Foreground="#333333"/>
+                    <PasswordBox x:Name="passtxt" FontFamily="Bahnschrift Light Condensed" Foreground="Black" FontSize="20" Height="40" Padding="10" 
+                                 BorderBrush="#FF90CAF9" BorderThickness="1"  />
                 </StackPanel>
+
+                <!-- Кнопка "Go" -->
+                <Button x:Name="btnauth" Content="Go" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="165" Height="31" 
+                        Background="#FF64B5F6" Foreground="White" BorderBrush="Transparent" Margin="0,0,0,10" 
+                        Click="btnauth_Click" Style="{StaticResource ModernButtonStyle}"/>
+
+                <!-- Кнопка "Create account" -->
+                <Button x:Name="btnreg" Content="Create account" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220" 
+                        Height="50" Background="Transparent" Foreground="#FF64B5F6" BorderBrush="Transparent" Margin="0,-10,0,0" 
+                        Click="btnreg_Click" Style="{StaticResource ModernButtonStyle}"/>
             </StackPanel>
-            <Button x:Name="btnauth" Content="Go" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="165" Background="#FFC1EBFC" BorderBrush="#FF88DFF7" Click="btnauth_Click"/>
-            <Button x:Name="btnreg" Content="Create account" FontFamily="Bahnschrift Light Condensed" FontSize="24" Width="220" BorderBrush="{x:Null}" Background="{x:Null}" Click="btnreg_Click"/>
-        </StackPanel>
+        </Border>
     </Grid>
 </Page>

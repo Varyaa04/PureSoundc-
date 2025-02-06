@@ -28,18 +28,42 @@ namespace PureSound.pages.player
         public addPlaylistsTrack(mainPlayer.Track track)
         {
             InitializeComponent();
-            if(track != null)
+            if (track != null)
             {
                 tracks = track;
             }
             DataContext = track;
             ReceivedId = tracks.Id;
             Console.WriteLine("Received ID: " + ReceivedId);
-            cbPlaylists.ItemsSource = pureSoundEntities.GetContext().
-                playlistsTable.Where(x => x.idUser == authId).
-                Select(x => x.namePlaylist).ToArray();
+
+            LoadPlaylists();
         }
-            
+
+        private void LoadPlaylists()
+        {
+            var playlists = pureSoundEntities.GetContext()
+                .playlistsTable
+                .Where(x => x.idUser == authId)
+                .Select(x => x.namePlaylist)
+                .ToArray();
+
+            if (playlists.Any())
+            {
+                cbPlaylists.ItemsSource = playlists;
+            }
+            else
+            {
+                MessageBox.Show("У вас нет плейлистов. Создайте новый плейлист.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+                OpenAddPlaylistWindow();
+            }
+        }
+
+        private void OpenAddPlaylistWindow()
+        {
+            var addPlaylistWindow = new addPlaylists(); 
+            addPlaylistWindow.ShowDialog();
+            LoadPlaylists();
+        }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
@@ -72,13 +96,14 @@ namespace PureSound.pages.player
                 AppConn.modeldb.SaveChanges();
 
                 MessageBox.Show("Песня успешно добавлена!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Ошибка при добавлении: " + ex.Message, "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
         public string ReceivedId { get; set; }
     }
 }
-

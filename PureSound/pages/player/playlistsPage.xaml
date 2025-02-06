@@ -8,29 +8,163 @@
       Title="playlistsPage"
       d:DesignHeight="485" d:DesignWidth="560">
 
-    <Grid Background="#FFA1F2FF">
+    <Grid Background="#FFE3F2FD">
         <StackPanel Orientation="Horizontal">
             <StackPanel Orientation="Vertical" Margin="0,10,0,0">
                 <TextBlock Text="Playlists" HorizontalAlignment="Center" FontFamily="Baskerville Old Face" FontSize="24"/>
-                <Button x:Name="btnAdd" Content="+" Height="30" Width="30" HorizontalAlignment="Right" Margin="0,-25,0,0" Click="btnAdd_Click"/>
+                <Button x:Name="btnAdd" Content="+" Height="35" Background="#FFC1EBFC" Width="32" HorizontalAlignment="Right" Margin="0,-25,0,0" Click="btnAdd_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}" CornerRadius="5" Padding="10">
+                                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Background" Value="#FF64B5F6"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#FF42A5F5"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
                 <StackPanel Orientation="Horizontal"/>
                 <StackPanel Height="430">
                     <TextBlock x:Name="counterTB" Margin="200,3,0,0" TextWrapping="Wrap" Height="31" Width="295" />
-                    <Label x:Name="nullL" Content="Нет плейлистов" FontSize="30" HorizontalAlignment="Center"/>
-                    <Button x:Name="btnAddNull" Content="+" Height="100" Width="100" Click="btnAddNull_Click"/>
-                    <ListView x:Name="playlistList" HorizontalAlignment="Left" Height="344" Width="490" Margin="0,-180,0,0">
+                    <Label x:Name="nullL" Content="Нет плейлистов"  HorizontalAlignment="Center" FontSize="40" FontFamily="Bahnschrift Light Condensed" Foreground="#333333"/>
+                    <Button x:Name="btnAddNull" Background="#FFC1EBFC" Content="+" Height="100" Width="100" Click="btnAddNull_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}" CornerRadius="5" Padding="10">
+                                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="Background" Value="#FF64B5F6"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FF42A5F5"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                    <ListView x:Name="playlistList" HorizontalAlignment="Left" Height="344" Width="490" Margin="0,-180,0,0"
+          Background="Transparent" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button x:Name="playlistBtn" Grid.Column="0" Width="50" Height="20" Click="playlistBtn_Click">hear</Button>
-                                    <TextBlock Grid.Column="1" Width="Auto" Text="{Binding namePlaylist}"/>
-                                </Grid>
+                                <Border Background="#FFE3F2FD" CornerRadius="10" Margin="5" Padding="10"
+                    BorderBrush="#FF90CAF9" BorderThickness="1">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Button x:Name="playlistBtn" Background="#FF64B5F6" Grid.Column="0" Width="70" Height="30"
+                            Click="playlistBtn_Click" Content="Открыть" Foreground="White"
+                            FontWeight="Bold" FontSize="12" Cursor="Hand"
+                            BorderBrush="Transparent" BorderThickness="0">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="5" Padding="5">
+                                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Background" Value="#FF64B5F6"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#FF42A5F5"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+
+                                        <!-- Название плейлиста -->
+                                        <TextBlock Grid.Column="1" Width="Auto" Text="{Binding namePlaylist}"
+                               VerticalAlignment="Center" Margin="10,0,0,0"
+                               FontSize="14" FontWeight="SemiBold" Foreground="#333333"/>
+
+                                        <TextBlock x:Name="counterTracks" Grid.Column="2" Width="Auto"
+                               Text="{Binding TrackCount}" VerticalAlignment="Center"
+                               Margin="10,0,0,0" FontSize="12" Foreground="#666666"
+                               FontStyle="Italic"/>
+                                        <Button x:Name="delPlaylist" Background="#FFE57373" Grid.Column="3" Width="30" Height="30"
+                            Click="delPlaylist_Click" Content="✖" Foreground="White"
+                            FontWeight="Bold" FontSize="14" Cursor="Hand"
+                            BorderBrush="Transparent" BorderThickness="0">
+                                            <Button.Style>
+                                                <Style TargetType="Button">
+                                                    <Setter Property="Template">
+                                                        <Setter.Value>
+                                                            <ControlTemplate TargetType="Button">
+                                                                <Border Background="{TemplateBinding Background}"
+                                                    CornerRadius="15" Padding="5">
+                                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                                                </Border>
+                                                            </ControlTemplate>
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                    <Setter Property="Background" Value="#FFE57373"/>
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Background" Value="#FFEF5350"/>
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Button.Style>
+                                        </Button>
+                                    </Grid>
+                                </Border>
                             </DataTemplate>
                         </ListView.ItemTemplate>
+
+                        <!-- Стиль для ListViewItem -->
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Padding" Value="0"/>
+                                <Setter Property="Margin" Value="0,5,0,5"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <Border Background="{TemplateBinding Background}"
+                                CornerRadius="10" Padding="0">
+                                                <ContentPresenter/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#FFF5F5F5"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter Property="Background" Value="#FFBBDEFB"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                     </ListView>
                 </StackPanel>
             </StackPanel>

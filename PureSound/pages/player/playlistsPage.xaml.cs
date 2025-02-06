@@ -47,21 +47,35 @@ namespace PureSound.pages.player
 
             playlists = new ObservableCollection<playlist>();
             LoadPlaylists();
+
+
+
+
         }
 
         public async void LoadPlaylists()
         {
-            var playlistsTable = _dbContext.playlistsTable.Where(x => x.idUser == userId && x.idUser != null).ToList();
+            var playlistsTable = _dbContext.playlistsTable
+         .Where(x => x.idUser == userId && x.idUser != null)
+         .ToList();
 
             foreach (var playlist in playlistsTable)
             {
-                playlists.Add(new playlist { namePlaylist = playlist.namePlaylist });
+                int trackCount = _dbContext.playlistTracksTable
+                    .Count(pt => pt.idPlaylist == playlist.idPlaylist);
+
+                playlists.Add(new playlist
+                {
+                    namePlaylist = playlist.namePlaylist,
+                    TrackCount = trackCount
+                });
             }
 
             playlistList.ItemsSource = playlists;
+
         }
 
-        
+
         private void btnAddNull_Click(object sender, RoutedEventArgs e)
         {
             addPlaylists firstWindow = new addPlaylists();
@@ -79,9 +93,43 @@ namespace PureSound.pages.player
         {
 
         }
-    }
-    public class playlist
-    {
-        public string namePlaylist { get; set; }
+
+        private void delPlaylist_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var selectedPlaylist = button.DataContext as playlist;
+
+            if (selectedPlaylist != null)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    "Вы точно хотите удалить выбранный плейлист?",
+                    "Подтверждение удаления",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question 
+                );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    var playlistToDelete = _dbContext.playlistsTable
+                        .FirstOrDefault(p => p.namePlaylist == selectedPlaylist.namePlaylist && p.idUser == userId);
+
+                    if (playlistToDelete != null)
+                    {
+                        _dbContext.playlistsTable.Remove(playlistToDelete);
+                        _dbContext.SaveChanges();
+
+                        playlists.Remove(selectedPlaylist);
+                        MessageBox.Show(
+                            "Плейлист успешно удален!", "Успех", MessageBoxButton.OK,MessageBoxImage.Information
+                        );
+                    }
+                }
+            }
+        }
+        public class playlist
+        {
+            public string namePlaylist { get; set; }
+            public int TrackCount { get; set; }
+        }
     }
 }

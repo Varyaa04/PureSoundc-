@@ -6,8 +6,39 @@
         xmlns:local="clr-namespace:PureSound.pages.player"
         mc:Ignorable="d"
         Title="Создать плейлист" Height="350" Width="500">
-    <Grid>
-        <TextBox x:Name="namePl" Margin="135,124,140,150" TextWrapping="Wrap" Text="" d:LayoutOverrides="VerticalAlignment"/>
-        <Button x:Name="addPlaylist" Content="Создать" Margin="200,204,200,90" d:LayoutOverrides="HorizontalAlignment" Click="addPlaylist_Click"/>
+    <Window.Resources>
+        <Style x:Key="ModernButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF64B5F6"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5" Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#FF42A5F5"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#FF1E88E5"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    <Grid Background="#FFB3EFF9">
+        <Label Content="Создать плейлист:" Margin="0,35,0,0" HorizontalAlignment="Center" Height="89" VerticalAlignment="Top" Width="250" FontSize="40" FontFamily="Bahnschrift Light Condensed" Foreground="#333333"/>
+        <TextBox x:Name="namePl" Margin="102,119,102,155" TextWrapping="Wrap" Text="" d:LayoutOverrides="VerticalAlignment" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" 
+                                     BorderBrush="#FF90CAF9" BorderThickness="1" Background="#FFF5F5F5"/>
+        <Button x:Name="addPlaylist" Content="Создать" Margin="200,204,200,90" d:LayoutOverrides="HorizontalAlignment" Click="addPlaylist_Click" Style="{StaticResource ModernButtonStyle}"/>
     </Grid>
 </Window>
