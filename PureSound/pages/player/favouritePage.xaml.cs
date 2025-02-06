@@ -20,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using PureSound.Properties;
+using static PureSound.pages.player.playlistsPage;
 
 namespace PureSound.pages.player
 {
@@ -73,6 +74,7 @@ namespace PureSound.pages.player
             }
         }
 
+
         private async Task<Track> GetTrackFromDeezerAsync(string trackId)
         {
             using (HttpClient client = new HttpClient())
@@ -80,15 +82,24 @@ namespace PureSound.pages.player
                 try
                 {
                     var response = await client.GetStringAsync($"{DeezerApiUrl}{trackId}");
+                    Debug.WriteLine($"Ответ от API Deezer для трека {trackId}: {response}");
+
                     var deezerTrack = JsonConvert.DeserializeObject<DeezerTrack>(response);
+
+                    // Проверяем, что данные получены и не равны null
+                    if (deezerTrack == null || deezerTrack.Artist == null || deezerTrack.Album == null)
+                    {
+                        Debug.WriteLine($"Ошибка: данные о треке {trackId} отсутствуют или некорректны.");
+                        return null;
+                    }
 
                     return new Track
                     {
                         Id = deezerTrack.Id,
                         Title = deezerTrack.Title,
-                        Artist = deezerTrack.Artist     ,
+                        Artist = deezerTrack.Artist.Name,
                         Duration = FormatDuration(deezerTrack.Duration),
-                        CoverUrl = deezerTrack.Album
+                        CoverUrl = deezerTrack.Album.CoverMedium
                     };
                 }
                 catch (Exception ex)
@@ -116,7 +127,35 @@ namespace PureSound.pages.player
 
         private void btndel_Click(object sender, RoutedEventArgs e)
         {
-            // Реализуйте удаление треков, если необходимо
+            var button = sender as Button;
+            var selectedTrack = button.DataContext as Track;
+
+            if (selectedTrack != null)
+            {
+                MessageBoxResult result = MessageBox.Show(
+                    "Вы точно хотите удалить выбранный трек из 'Избранного'?",
+                    "Подтверждение удаления",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                );
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    var trackToDelete = _dbContext.tableFavourite
+                        .FirstOrDefault(p => p.idTrack == selectedTrack.Id && p.idUser == userId);
+
+                    if (trackToDelete != null)
+                    {
+                        _dbContext.tableFavourite.Remove(trackToDelete);
+                        _dbContext.SaveChanges();
+
+                        Tracks.Remove(selectedTrack);
+                        MessageBox.Show(
+                            "Трек успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information
+                        );
+                    }
+                }
+            }
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -144,8 +183,18 @@ namespace PureSound.pages.player
         public string Id { get; set; }
         public string Title { get; set; }
         public int Duration { get; set; }
-        public string Artist { get; set; }
-        public string Album { get; set; }
+        public DeezerArtist Artist { get; set; } // Исправлено: объект, а не строка
+        public DeezerAlbum Album { get; set; }   // Исправлено: объект, а не строка
     }
 
+    public class DeezerArtist
+    {
+        public string Name { get; set; }
+    }
+
+    public class DeezerAlbum
+    {
+        [JsonProperty("cover_medium")]
+        public string CoverMedium { get; set; }
+    }
 }

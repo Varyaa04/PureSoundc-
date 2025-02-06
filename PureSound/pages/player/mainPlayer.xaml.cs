@@ -169,8 +169,7 @@ namespace PureSound.pages.player
             try
             {
                 Button b = sender as Button;
-                string ID = Convert.ToString(float.Parse(((b.Parent as StackPanel).Children[0] as TextBlock).Text));
-
+                string ID = ((b.Parent as StackPanel).Children[0] as TextBlock).Text;
                 int idUsers = Convert.ToInt32(App.Current.Properties["idUser"]);
 
                 var existingFavorite = pureSoundEntities.GetContext().tableFavourite.FirstOrDefault(o => o.idUser == idUsers && o.idTrack == ID);
@@ -202,6 +201,7 @@ namespace PureSound.pages.player
 
         private void TracksList_Selected(object sender, RoutedEventArgs e)
         {
+
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
