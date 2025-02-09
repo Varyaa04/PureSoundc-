@@ -85,18 +85,28 @@ namespace PureSound.pages.player
                     MessageBox.Show("Плейлист не найден!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                
-                var newPlaylistTrack = new playlistTracksTable()
+
+                var existingTrack = pureSoundEntities.GetContext().playlistTracksTable.FirstOrDefault(o => o.idPlaylist == idPlaylist && o.idTracks == ReceivedId);
+
+                if (existingTrack != null)
                 {
-                    idPlaylist = idPlaylist,
-                    idTracks = ReceivedId
-                };
+                    MessageBox.Show("Данный трек уже есть в данном плейлисте!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    var newPlaylistTrack = new playlistTracksTable()
+                    {
+                        idPlaylist = idPlaylist,
+                        idTracks = ReceivedId
+                    };
 
-                AppConn.modeldb.playlistTracksTable.Add(newPlaylistTrack);
-                AppConn.modeldb.SaveChanges();
+                    AppConn.modeldb.playlistTracksTable.Add(newPlaylistTrack);
+                    AppConn.modeldb.SaveChanges();
 
-                MessageBox.Show("Песня успешно добавлена!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
+                    MessageBox.Show("Песня успешно добавлена!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
+                    this.Close();
+
+                }
             }
             catch (Exception ex)
             {

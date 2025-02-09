@@ -39,13 +39,11 @@ namespace PureSound.pages.player
             DataContext = this;
             _dbContext = new pureSoundEntities();
 
-            // Устанавливаем название плейлиста
             namePlTb.Text = _dbContext.playlistsTable
                 .Where(x => x.idPlaylist == currentPlaylist.idPlaylist)
                 .Select(x => x.namePlaylist)
                 .FirstOrDefault() ?? "Название плейлиста";
 
-            // Загружаем треки плейлиста
             LoadPlaylistTracksAsync();
         }
 
@@ -75,10 +73,6 @@ namespace PureSound.pages.player
             {
                 MessageBox.Show($"Ошибка при загрузке треков плейлиста: {ex.Message}");
             }
-            finally
-            {
-                _dbContext.Dispose();
-            }
         }
 
         private async Task<Track> GetTrackFromDeezerAsync(string trackId)
@@ -87,17 +81,10 @@ namespace PureSound.pages.player
             {
                 try
                 {
-                    var response = await client.GetAsync($"{DeezerApiUrl}{trackId}");
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Debug.WriteLine($"Ошибка: {response.StatusCode} для трека {trackId}");
-                        return null;
-                    }
+                    var response = await client.GetStringAsync($"{DeezerApiUrl}{trackId}");
+                    Debug.WriteLine($"Ответ от API Deezer для трека {trackId}: {response}");
 
-                    var responseData = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine($"Ответ от API Deezer для трека {trackId}: {responseData}");
-
-                    var deezerTrack = JsonConvert.DeserializeObject<DeezerTrack>(responseData);
+                    var deezerTrack = JsonConvert.DeserializeObject<DeezerTrack>(response);
 
                     if (deezerTrack == null || deezerTrack.Artist == null || deezerTrack.Album == null)
                     {
