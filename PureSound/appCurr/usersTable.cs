@@ -26,6 +26,7 @@ namespace PureSound.appCurr
         public string userEmail { get; set; }
         public string userLogin { get; set; }
         public string userPassword { get; set; }
+        public string imageUser { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<playlistsTable> playlistsTable { get; set; }

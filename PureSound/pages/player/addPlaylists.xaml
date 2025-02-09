@@ -39,6 +39,6 @@
         <Label Content="Создать плейлист:" Margin="0,35,0,0" HorizontalAlignment="Center" Height="89" VerticalAlignment="Top" Width="250" FontSize="40" FontFamily="Bahnschrift Light Condensed" Foreground="#333333"/>
         <TextBox x:Name="namePl" Margin="102,119,102,155" TextWrapping="Wrap" Text="" d:LayoutOverrides="VerticalAlignment" FontFamily="Bahnschrift Light Condensed" FontSize="20" Height="40" Padding="10" 
                                      BorderBrush="#FF90CAF9" BorderThickness="1" Background="#FFF5F5F5"/>
-        <Button x:Name="addPlaylist" Content="Создать" Margin="200,204,200,90" d:LayoutOverrides="HorizontalAlignment" Click="addPlaylist_Click" Style="{StaticResource ModernButtonStyle}"/>
+        <Button Height="40" Width="110" x:Name="addPlaylist" Content="Создать" Click="addPlaylist_Click" Style="{StaticResource ModernButtonStyle}" d:LayoutOverrides="HorizontalAlignment, Height" Margin="195,194,195,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

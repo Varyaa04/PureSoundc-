@@ -60,15 +60,16 @@
                         </StackPanel>
 
                         <!-- Кнопки навигации -->
-                        <StackPanel Height="166" Margin="20,20,0,0">
+                        <StackPanel Height="232" Margin="20,20,0,0">
                             <Button x:Name="btnFav" Content="Favorite" Margin="0,0,0,10" Width="159" Height="40" Click="btnFav_Click" Style="{StaticResource ModernButtonStyle}"/>
                             <Button x:Name="btnMain" Content="Main" Margin="0,10,0,10" Width="159" Height="40" Click="btnMain_Click" Style="{StaticResource ModernButtonStyle}"/>
                             <Button x:Name="btnPlaylists" Content="Playlists" Margin="0,10,0,10" Width="159" Height="40" Click="btnPlaylists_Click" Style="{StaticResource ModernButtonStyle}"/>
+                            <Button x:Name="btnPlayer" Content="Player" Margin="0,10,0,10" Width="159" Height="40" Click="btnPlayer_Click" Style="{StaticResource ModernButtonStyle}"/>
                         </StackPanel>
 
                         <!-- Кнопка выхода -->
-                        <StackPanel Height="100" Margin="20,20,0,0">
-                            <Button x:Name="btnExit" Content="Exit" Margin="0,20,0,0" Width="159" Height="40" Click="btnExit_Click" Style="{StaticResource ModernButtonStyle}" Background="#FFE57373"/>
+                        <StackPanel Height="79" Margin="20,0,0,0" Width="110">
+                            <Button x:Name="btnExit" Content="Exit" Margin="0,0,0,0" Width="90" Height="39" Click="btnExit_Click" Style="{StaticResource ModernButtonStyle}" Background="#FFE57373"/>
                         </StackPanel>
                     </StackPanel>
                 </Border>

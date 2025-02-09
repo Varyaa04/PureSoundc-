@@ -22,13 +22,14 @@ namespace PureSound.appCurr
             : base("name=pureSoundEntities")
         {
         }
-    
+
         public static pureSoundEntities GetContext()
         {
             if (_context == null)
                 _context = new pureSoundEntities();
             return _context;
         }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             throw new UnintentionalCodeFirstException();

@@ -85,7 +85,7 @@ namespace PureSound.pages.player
                     MessageBox.Show("Плейлист не найден!", "Ошибка!", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-
+                
                 var newPlaylistTrack = new playlistTracksTable()
                 {
                     idPlaylist = idPlaylist,

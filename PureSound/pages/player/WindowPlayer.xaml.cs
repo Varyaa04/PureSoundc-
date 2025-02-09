@@ -126,5 +126,10 @@ namespace PureSound.pages.player
                 MessageBox.Show("Ошибка: Невозможно найти родительский StackPanel.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void btnPlayer_Click(object sender, RoutedEventArgs e)
+        {
+            AppFramePl.frame.Navigate(new playerPage());
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿﻿using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NuGet.Packaging.Signing;
 using PureSound.appCurr;
 using System;
@@ -23,51 +23,63 @@ using static NuGet.Packaging.PackagingConstants;
 namespace PureSound.pages.player
 {
     /// <summary>
-    /// Логика взаимодействия для favouritePage.xaml
+    /// Логика взаимодействия для playlistTracks.xaml
     /// </summary>
-    public partial class favouritePage : Page
+    public partial class playlistTracks : Page
     {
+        public playlistsTable _currentPlaylist;
+        private pureSoundEntities _dbContext;
         private const string DeezerApiUrl = "https://api.deezer.com/track/";
         public ObservableCollection<Track> Tracks { get; set; } = new ObservableCollection<Track>();
-        private int userId = Convert.ToInt32(App.Current.Properties["idUser"]);
 
-        private pureSoundEntities _dbContext;
-
-        public favouritePage()
+        public playlistTracks(playlistsTable currentPlaylist)
         {
             InitializeComponent();
+            _currentPlaylist = currentPlaylist;
+            DataContext = this;
             _dbContext = new pureSoundEntities();
-            LoadFavouriteTracksAsync();
+
+            // Устанавливаем название плейлиста
+            namePlTb.Text = _dbContext.playlistsTable
+                .Where(x => x.idPlaylist == currentPlaylist.idPlaylist)
+                .Select(x => x.namePlaylist)
+                .FirstOrDefault() ?? "Название плейлиста";
+
+            // Загружаем треки плейлиста
+            LoadPlaylistTracksAsync();
         }
 
-        private async void LoadFavouriteTracksAsync()
+        private async void LoadPlaylistTracksAsync()
         {
             try
             {
-                var favouriteTracks = _dbContext.tableFavourite
-                    .Where(f => f.idUser == userId)
-                    .Select(f => f.idTrack)
+                var playlistTracks = _dbContext.playlistTracksTable
+                    .Where(f => f.idPlaylist == _currentPlaylist.idPlaylist)
+                    .Select(f => f.idTracks)
                     .ToList();
 
                 Tracks.Clear();
 
-                foreach (var trackId in favouriteTracks)
+                foreach (var trackId in playlistTracks)
                 {
                     var track = await GetTrackFromDeezerAsync(trackId);
                     if (track != null)
                     {
-                        Tracks.Add(track);
+                        Application.Current.Dispatcher.Invoke(() => Tracks.Add(track));
                     }
                 }
 
-                TracksList.ItemsSource = Tracks;
+                Application.Current.Dispatcher.Invoke(() => TracksList.ItemsSource = Tracks);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при загрузке избранных треков: {ex.Message}");
+                MessageBox.Show($"Ошибка при загрузке треков плейлиста: {ex.Message}");
+            }
+            finally
+            {
+                _dbContext.Dispose();
             }
         }
-
 
         private async Task<Track> GetTrackFromDeezerAsync(string trackId)
         {
@@ -75,10 +87,17 @@ namespace PureSound.pages.player
             {
                 try
                 {
-                    var response = await client.GetStringAsync($"{DeezerApiUrl}{trackId}");
-                    Debug.WriteLine($"Ответ от API Deezer для трека {trackId}: {response}");
+                    var response = await client.GetAsync($"{DeezerApiUrl}{trackId}");
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Debug.WriteLine($"Ошибка: {response.StatusCode} для трека {trackId}");
+                        return null;
+                    }
 
-                    var deezerTrack = JsonConvert.DeserializeObject<DeezerTrack>(response);
+                    var responseData = await response.Content.ReadAsStringAsync();
+                    Debug.WriteLine($"Ответ от API Deezer для трека {trackId}: {responseData}");
+
+                    var deezerTrack = JsonConvert.DeserializeObject<DeezerTrack>(responseData);
 
                     if (deezerTrack == null || deezerTrack.Artist == null || deezerTrack.Album == null)
                     {
@@ -135,12 +154,12 @@ namespace PureSound.pages.player
         private void btndel_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var selectedTrack = button.DataContext as Track;
+            var selectedTrack = button?.DataContext as Track;
 
             if (selectedTrack != null)
             {
                 MessageBoxResult result = MessageBox.Show(
-                    "Вы точно хотите удалить выбранный трек из 'Избранного'?",
+                    "Вы точно хотите удалить выбранный трек из плейлиста?",
                     "Подтверждение удаления",
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question
@@ -148,12 +167,12 @@ namespace PureSound.pages.player
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    var trackToDelete = _dbContext.tableFavourite
-                        .FirstOrDefault(p => p.idTrack == selectedTrack.Id && p.idUser == userId);
+                    var trackToDelete = _dbContext.playlistTracksTable
+                        .FirstOrDefault(p => p.idTracks == selectedTrack.Id && p.idPlaylist == _currentPlaylist.idPlaylist);
 
                     if (trackToDelete != null)
                     {
-                        _dbContext.tableFavourite.Remove(trackToDelete);
+                        _dbContext.playlistTracksTable.Remove(trackToDelete);
                         _dbContext.SaveChanges();
 
                         Tracks.Remove(selectedTrack);
@@ -168,7 +187,7 @@ namespace PureSound.pages.player
         private void ResetButton_Click(object sender, RoutedEventArgs e)
         {
             SearchBox.Text = "";
-            LoadFavouriteTracksAsync();
+            LoadPlaylistTracksAsync();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
@@ -176,8 +195,12 @@ namespace PureSound.pages.player
             string query = SearchBox.Text.Trim();
             FilterTracks(query);
         }
+
+        private void TracksList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
     }
-}
+
     public class Track
     {
         public string Id { get; set; }
@@ -191,9 +214,9 @@ namespace PureSound.pages.player
     {
         public string Id { get; set; }
         public string Title { get; set; }
-        public int Duration { get; set; }
         public DeezerArtist Artist { get; set; }
-        public DeezerAlbum Album { get; set; }  
+        public int Duration { get; set; }
+        public DeezerAlbum Album { get; set; }
     }
 
     public class DeezerArtist
@@ -203,6 +226,6 @@ namespace PureSound.pages.player
 
     public class DeezerAlbum
     {
-        [JsonProperty("cover_medium")]
         public string CoverMedium { get; set; }
     }
+}

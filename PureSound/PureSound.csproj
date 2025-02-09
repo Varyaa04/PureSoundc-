@@ -195,7 +195,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="pages\player\playerPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="pages\player\playlistsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="pages\player\playlistTracks.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -227,8 +235,14 @@
     <Compile Include="pages\player\mainPlayer.xaml.cs">
       <DependentUpon>mainPlayer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="pages\player\playerPage.xaml.cs">
+      <DependentUpon>playerPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="pages\player\playlistsPage.xaml.cs">
       <DependentUpon>playlistsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="pages\player\playlistTracks.xaml.cs">
+      <DependentUpon>playlistTracks.xaml</DependentUpon>
     </Compile>
     <Compile Include="pages\player\WindowPlayer.xaml.cs">
       <DependentUpon>WindowPlayer.xaml</DependentUpon>

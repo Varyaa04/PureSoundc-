@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище pureSoundModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище pureSoundModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="playlistsTable">
           <Key>
             <PropertyRef Name="idPlaylist" />
@@ -48,6 +48,7 @@
           <Property Name="userEmail" Type="nvarchar(max)" Nullable="false" />
           <Property Name="userLogin" Type="nvarchar(max)" Nullable="false" />
           <Property Name="userPassword" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="imageUser" Type="nvarchar(max)" />
         </EntityType>
         <Association Name="FK_playlistsTable_usersTable">
           <End Role="usersTable" Type="Self.usersTable" Multiplicity="1">
@@ -141,8 +142,7 @@
             <End Role="tableFavourite" EntitySet="tableFavourite" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="pureSoundModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -195,6 +195,7 @@
           <Property Name="userPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="playlistsTable" Relationship="Self.FK_playlistsTable_usersTable" FromRole="usersTable" ToRole="playlistsTable" />
           <NavigationProperty Name="tableFavourite" Relationship="Self.FK_tableFavourite_usersTable" FromRole="usersTable" ToRole="tableFavourite" />
+          <Property Name="imageUser" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_playlistsTable_usersTable">
           <End Role="usersTable" Type="Self.usersTable" Multiplicity="1">
@@ -345,6 +346,7 @@
           <EntitySetMapping Name="usersTable">
             <EntityTypeMapping TypeName="pureSoundModel.usersTable">
               <MappingFragment StoreEntitySet="usersTable">
+                <ScalarProperty Name="imageUser" ColumnName="imageUser" />
                 <ScalarProperty Name="idUser" ColumnName="idUser" />
                 <ScalarProperty Name="userName" ColumnName="userName" />
                 <ScalarProperty Name="userEmail" ColumnName="userEmail" />

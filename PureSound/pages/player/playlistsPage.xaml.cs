@@ -1,7 +1,9 @@
 ﻿using PureSound.appCurr;
+using PureSound.pages.userprofile;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,12 +26,19 @@ namespace PureSound.pages.player
     {
         private int userId = Convert.ToInt32(App.Current.Properties["idUser"]);
         private ObservableCollection<playlist> playlists { get; set; }
-
         private pureSoundEntities _dbContext;
+
         public playlistsPage()
         {
             InitializeComponent();
             _dbContext = new pureSoundEntities();
+            UpdateUI(); // Обновляем интерфейс
+            playlists = new ObservableCollection<playlist>();
+            LoadPlaylists();
+        }
+
+        private void UpdateUI()
+        {
             if (_dbContext.playlistsTable.Any(x => x.idUser == userId))
             {
                 btnAddNull.Visibility = Visibility.Hidden;
@@ -44,20 +53,15 @@ namespace PureSound.pages.player
                 btnAdd.Visibility = Visibility.Hidden;
                 playlistList.Visibility = Visibility.Hidden;
             }
-
-            playlists = new ObservableCollection<playlist>();
-            LoadPlaylists();
-
-
-
-
         }
 
         public async void LoadPlaylists()
         {
+            playlists.Clear(); // Очищаем коллекцию перед загрузкой
+
             var playlistsTable = _dbContext.playlistsTable
-         .Where(x => x.idUser == userId && x.idUser != null)
-         .ToList();
+                .Where(x => x.idUser == userId)
+                .ToList();
 
             foreach (var playlist in playlistsTable)
             {
@@ -67,14 +71,13 @@ namespace PureSound.pages.player
                 playlists.Add(new playlist
                 {
                     namePlaylist = playlist.namePlaylist,
-                    TrackCount = trackCount
+                    TrackCount = trackCount,
+                    idPlaylist = playlist.idPlaylist // Добавьте это, если нужно
                 });
             }
 
             playlistList.ItemsSource = playlists;
-
         }
-
 
         private void btnAddNull_Click(object sender, RoutedEventArgs e)
         {
@@ -86,12 +89,30 @@ namespace PureSound.pages.player
         {
             addPlaylists firstWindow = new addPlaylists();
             firstWindow.Show();
-
         }
 
         private void playlistBtn_Click(object sender, RoutedEventArgs e)
         {
+            var selectedPlaylist = playlistList.SelectedItem as playlist;
 
+            if (selectedPlaylist != null)
+            {
+                var currentPlaylist = _dbContext.playlistsTable
+                    .FirstOrDefault(p => p.namePlaylist == selectedPlaylist.namePlaylist && p.idUser == userId);
+
+                if (currentPlaylist != null)
+                {
+                    AppFramePl.frame.Navigate(new playlistTracks(currentPlaylist));
+                }
+                else
+                {
+                    MessageBox.Show("Плейлист не найден в базе данных.");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Плейлист не выбран.");
+            }
         }
 
         private void delPlaylist_Click(object sender, RoutedEventArgs e)
@@ -105,7 +126,7 @@ namespace PureSound.pages.player
                     "Вы точно хотите удалить выбранный плейлист?",
                     "Подтверждение удаления",
                     MessageBoxButton.YesNo,
-                    MessageBoxImage.Question 
+                    MessageBoxImage.Question
                 );
 
                 if (result == MessageBoxResult.Yes)
@@ -119,17 +140,24 @@ namespace PureSound.pages.player
                         _dbContext.SaveChanges();
 
                         playlists.Remove(selectedPlaylist);
+                        playlistList.ItemsSource = null;
+                        playlistList.ItemsSource = playlists;
+
+                        UpdateUI(); // Обновляем интерфейс после удаления
+
                         MessageBox.Show(
-                            "Плейлист успешно удален!", "Успех", MessageBoxButton.OK,MessageBoxImage.Information
+                            "Плейлист успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information
                         );
                     }
                 }
             }
         }
+
         public class playlist
         {
             public string namePlaylist { get; set; }
             public int TrackCount { get; set; }
+            public int idPlaylist { get; set; } // Добавьте это, если нужно
         }
     }
 }
