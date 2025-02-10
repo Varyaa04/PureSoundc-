@@ -53,7 +53,7 @@
                             <TextBlock x:Name="tbId" Text="{Binding idUser}" Visibility="Hidden" Width="0" Height="0"/>
                             <Button x:Name="profileSee" Width="81" Height="84" Margin="25,0,0,0" Foreground="{x:Null}" BorderBrush="{x:Null}" Click="profileSee_Click" Style="{StaticResource ModernButtonStyle}">
                                 <Button.Background>
-                                    <ImageBrush ImageSource="/pages/player/profile.png"/>
+                                    <ImageBrush ImageSource="{Binding CurrentPhoto}"/>
                                 </Button.Background>
                             </Button>
                             <TextBlock x:Name="usernameTb" Text="{Binding userName}" TextWrapping="Wrap" Width="183" Height="40" FontFamily="Bodoni MT Black" FontSize="36" Foreground="#333333" VerticalAlignment="Center" Margin="10,0,0,0"/>

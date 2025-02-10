@@ -55,6 +55,7 @@ namespace PureSound.pages.player
             {
                 usernameTb.Text = userName;
             }
+
         }
 
         private void btnFav_Click(object sender, RoutedEventArgs e)

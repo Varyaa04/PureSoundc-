@@ -70,7 +70,9 @@ namespace PureSound.pages.userprofile
             tbPassword.IsEnabled = false;
             btnSave.IsEnabled = false;
             tbPasswordVisible.IsEnabled = false;
-            cbSPass.IsEnabled = false;
+            cbSPass.IsEnabled = false; 
+            btnUploadPhoto.IsEnabled = false;
+
 
             tbPassword.PasswordChar = '☭';
             tbPasswordVisible.Visibility = Visibility.Hidden;
@@ -91,7 +93,9 @@ namespace PureSound.pages.userprofile
             tbPassword.IsEnabled = true;
             cbSPass.IsEnabled = true;
             tbPasswordVisible.IsEnabled = true;
-            btnSave.IsEnabled=true;
+            btnSave.IsEnabled=true; 
+            btnUploadPhoto.IsEnabled = true;
+
         }
 
         private void cbSPass_Checked(object sender, RoutedEventArgs e)
@@ -117,9 +121,25 @@ namespace PureSound.pages.userprofile
             tbPassword.IsEnabled = false;
             cbSPass.IsEnabled = false;
             tbPasswordVisible.IsEnabled = false;
+            btnUploadPhoto.IsEnabled = false;
             btnSave.IsEnabled = false;
         }
 
+        private void btnUploadPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Filter = "Image files (*.jpg, *.jpeg, *.png)|*.jpg;*.jpeg;*.png",
+                Title = "Выберите фото"
+            };
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string filePath = openFileDialog.FileName;
+                curUser.imageUser = filePath;
+                userPhotoImage.Source = new BitmapImage(new Uri(filePath));
+            }
+        }
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -133,6 +153,7 @@ namespace PureSound.pages.userprofile
                     userToUpdate.userEmail = tbEmail.Text;
                     userToUpdate.userPassword = tbPassword.Password;
                     userToUpdate.userLogin = tbLogin.Text;
+                    userToUpdate.imageUser = curUser.imageUser; 
 
                     AppConn.modeldb.SaveChanges();
                     MessageBox.Show("Данные успешно изменены!", "Уведомление", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -149,7 +170,6 @@ namespace PureSound.pages.userprofile
             {
                 MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
         }
     }
 }

@@ -98,7 +98,7 @@ namespace PureSound.pages.player
                         Title = deezerTrack.Title,
                         Artist = deezerTrack.Artist.Name,
                         Duration = FormatDuration(deezerTrack.Duration),
-                        CoverUrl = deezerTrack.Album.CoverMedium
+                        CoverUrl = deezerTrack.Album?.CoverMedium ?? "https://img.freepik.com/free-vector/vector-beam-musical-note-sticker_53876-127376.jpg?t=st=1739215131~exp=1739218731~hmac=96c235e09b80c4d7e3c775db47c6a317acb5b24aadf32514c2e81187bde1bc39&w=740" // Запасной URL
                     };
                 }
                 catch (Exception ex)

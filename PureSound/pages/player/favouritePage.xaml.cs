@@ -19,6 +19,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using static NuGet.Packaging.PackagingConstants;
+using static PureSound.pages.player.mainPlayer;
 
 namespace PureSound.pages.player
 {
@@ -37,10 +38,10 @@ namespace PureSound.pages.player
         {
             InitializeComponent();
             _dbContext = new pureSoundEntities();
-            LoadFavouriteTracksAsync();
+            Loaded += async (s, e) => await LoadFavouriteTracksAsync();
         }
 
-        private async void LoadFavouriteTracksAsync()
+        private async Task LoadFavouriteTracksAsync()
         {
             try
             {
@@ -75,25 +76,51 @@ namespace PureSound.pages.player
             {
                 try
                 {
+
+                    //string jsonResponse = await client.GetStringAsync(DeezerApiUrl);
+
+                    //Console.WriteLine(jsonResponse);
+
+
+                    //var result = JsonConvert.DeserializeObject<DeezerResponse>(jsonResponse);
+
+                    //Tracks.Clear();
+                    //foreach (var item in result.Data)
+                    //{
+                    //    Tracks.Add(new Track
+                    //    {
+                    //        Id = item.Id,
+                    //        Title = item.Title,
+                    //        Artist = item.Artist.Name,
+                    //        Duration = TimeSpan.FromSeconds(item.Duration).ToString(@"mm\:ss"),
+                    //        CoverUrl = item.Album.CoverMedium
+                    //    });
+                    //}
+
                     var response = await client.GetStringAsync($"{DeezerApiUrl}{trackId}");
                     Debug.WriteLine($"Ответ от API Deezer для трека {trackId}: {response}");
 
                     var deezerTrack = JsonConvert.DeserializeObject<DeezerTrack>(response);
 
-                    if (deezerTrack == null || deezerTrack.Artist == null || deezerTrack.Album == null)
+                    if (deezerTrack == null )
                     {
                         Debug.WriteLine($"Ошибка: данные о треке {trackId} отсутствуют или некорректны.");
                         return null;
                     }
-
-                    return new Track
+                    else
                     {
-                        Id = deezerTrack.Id,
-                        Title = deezerTrack.Title,
-                        Artist = deezerTrack.Artist.Name,
-                        Duration = FormatDuration(deezerTrack.Duration),
-                        CoverUrl = deezerTrack.Album.CoverMedium
-                    };
+                        Tracks.Clear();
+
+                        return new Track
+                        {
+                            Id = deezerTrack.Id,
+                            Title = deezerTrack.Title,
+                            Artist = deezerTrack.Artist.Name,
+                            Duration = FormatDuration(deezerTrack.Duration),
+                            CoverUrl = deezerTrack.Album?.CoverMedium ?? "https://img.freepik.com/free-vector/vector-beam-musical-note-sticker_53876-127376.jpg?t=st=1739215131~exp=1739218731~hmac=96c235e09b80c4d7e3c775db47c6a317acb5b24aadf32514c2e81187bde1bc39&w=740" // Запасной URL
+                        };
+                    }
+                  
                 }
                 catch (Exception ex)
                 {
@@ -194,6 +221,7 @@ namespace PureSound.pages.player
         public int Duration { get; set; }
         public DeezerArtist Artist { get; set; }
         public DeezerAlbum Album { get; set; }  
+
     }
 
     public class DeezerArtist

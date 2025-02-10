@@ -83,8 +83,21 @@
                 </StackPanel>
 
                 <!-- Кнопка сохранения изменений -->
-                <StackPanel Height="100" Orientation="Horizontal">
-                    <StackPanel Width="622">
+                <StackPanel Height="139" Orientation="Horizontal">
+                    <StackPanel Width="622" Height="144">
+                        <StackPanel Height="94" Orientation="Horizontal" Width="188">
+                            <Button x:Name="btnUploadPhoto" Content="Добавить фото" Height="34" Width="100" RenderTransformOrigin="0.5,0.5" Click="btnUploadPhoto_Click">
+                                <Button.RenderTransform>
+                                    <TransformGroup>
+                                        <ScaleTransform/>
+                                        <SkewTransform/>
+                                        <RotateTransform Angle="-0.304"/>
+                                        <TranslateTransform/>
+                                    </TransformGroup>
+                                </Button.RenderTransform>
+                            </Button>
+                            <Image Height="72" Width="78" Name="userPhotoImage" Source="{Binding CurrentPhoto}" Margin="10"/>
+                        </StackPanel>
                         <Button x:Name="btnSave" Style="{StaticResource ModernButton}" Content="Сохранить изменения" Height="35" Width="174" Click="btnSave_Click"/>
                     </StackPanel>
                 </StackPanel>

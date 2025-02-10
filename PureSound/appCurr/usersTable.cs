@@ -11,23 +11,61 @@ namespace PureSound.appCurr
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using static NuGet.Client.ManagedCodeConventions;
+
     public partial class usersTable
     {
+        public event PropertyChangedEventHandler PropertyChanged;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public usersTable()
         {
             this.playlistsTable = new HashSet<playlistsTable>();
             this.tableFavourite = new HashSet<tableFavourite>();
         }
-    
+
+        private string _imageUser;
+        public string imageUser
+        {
+            get { return _imageUser; }
+            set
+            {
+                _imageUser = value;
+                OnPropertyChanged(nameof(imageUser));
+                OnPropertyChanged(nameof(CurrentPhoto)); // Уведомление об изменении CurrentPhoto
+            }
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public string CurrentPhoto
+        {
+            get
+            {
+                Debug.WriteLine($"CurrentPhoto: imageUser = {imageUser}");
+                if (string.IsNullOrEmpty(imageUser) || string.IsNullOrWhiteSpace(imageUser))
+                {
+                    return "/pages/player/profile.png";
+                }
+                else
+                {
+                    return imageUser;
+                }
+            }
+        }
+
+
         public int idUser { get; set; }
         public string userName { get; set; }
         public string userEmail { get; set; }
         public string userLogin { get; set; }
         public string userPassword { get; set; }
-        public string imageUser { get; set; }
-    
+      
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<playlistsTable> playlistsTable { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
