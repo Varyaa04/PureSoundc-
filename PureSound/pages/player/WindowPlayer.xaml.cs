@@ -23,23 +23,13 @@ namespace PureSound.pages.player
     public partial class WindowPlayer : Window
     {
         int authId;
-        private usersTable user = new usersTable();
 
         public WindowPlayer()
         {
             InitializeComponent();
-            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            AppFramePl.frame = MainFrame;
-            AppConn.modeldb = new pureSoundEntities();
-            AppFramePl.frame.Navigate(new player.mainPlayer());
-            if (App.Current.Properties["idUser"] == null)
-            {
-                MessageBox.Show("Ошибка: ID пользователя не найден.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                this.Close();
-                return;
-            }
-
             authId = Convert.ToInt32(App.Current.Properties["idUser"].ToString());
+            var user =  pureSoundEntities.GetContext().usersTable.FirstOrDefault(x => x.idUser == authId);
+            this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             user.idUser = authId;
             DataContext = user;
             tbId.Text = user.idUser.ToString();
@@ -47,16 +37,10 @@ namespace PureSound.pages.player
                 .Where(x => x.idUser == authId)
                 .Select(x => x.userName)
                 .FirstOrDefault();
-
-            if (string.IsNullOrEmpty(userName))
-            {
-                MessageBox.Show("Ошибка: Имя пользователя не найдено.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else
-            {
-                usernameTb.Text = userName;
-            }
-            Debug.WriteLine($" imageUser = {user.imageUser}");
+                      
+        
+            AppFramePl.frame = MainFrame;
+            AppFramePl.frame.Navigate(new player.mainPlayer());
         }
 
         private void btnFav_Click(object sender, RoutedEventArgs e)

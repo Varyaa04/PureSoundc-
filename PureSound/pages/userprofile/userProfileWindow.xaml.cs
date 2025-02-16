@@ -92,6 +92,7 @@ namespace PureSound.pages.userprofile
                     userPhotoImage.Source = new BitmapImage(new Uri("/pages/player/profile.png", UriKind.Relative));
                 }
             }
+            userPhotoImage.Source = curUser.CurrentPhoto;
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -153,24 +154,29 @@ namespace PureSound.pages.userprofile
             {
                 try
                 {
-                    // Читаем файл как массив байтов
+                    // Чтение файла как массива байтов
                     byte[] imageBytes = File.ReadAllBytes(openFileDialog.FileName);
 
-                    // Кодируем массив байтов в Base64
+                    // Кодирование массива байтов в Base64
                     string base64Image = Convert.ToBase64String(imageBytes);
 
-                    // Сохраняем Base64-строку в свойстве curUser.imageUser
+                    // Сохранение Base64-строки в свойстве curUser.imageUser
                     curUser.imageUser = base64Image;
 
-                    // Преобразуем Base64-строку в изображение и устанавливаем его в Image control
+                    // Преобразование Base64-строки обратно в массив байтов
                     byte[] byteArray = Convert.FromBase64String(base64Image);
+
+                    // Создание BitmapImage из массива байтов
                     using (var memoryStream = new MemoryStream(byteArray))
                     {
                         var bitmapImage = new BitmapImage();
                         bitmapImage.BeginInit();
-                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad; // Изображение загружается сразу
                         bitmapImage.StreamSource = memoryStream;
                         bitmapImage.EndInit();
+                        bitmapImage.Freeze(); // Заморозка BitmapImage для использования в других потоках
+
+                        // Установка изображения в Image control
                         userPhotoImage.Source = bitmapImage;
                     }
 
@@ -179,6 +185,7 @@ namespace PureSound.pages.userprofile
                 catch (Exception ex)
                 {
                     Debug.WriteLine($"Ошибка при загрузке изображения: {ex.Message}");
+                    MessageBox.Show($"Ошибка при загрузке изображения: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

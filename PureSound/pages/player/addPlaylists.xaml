@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PureSound.pages.player"
         mc:Ignorable="d"
-        Title="Создать плейлист" Height="350" Width="500">
+        Title="Создать плейлист" Height="350" Width="500" Icon="/free-icon-music-and-multimedia-8216026.png">
     <Window.Resources>
         <Style x:Key="ModernButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF64B5F6"/>

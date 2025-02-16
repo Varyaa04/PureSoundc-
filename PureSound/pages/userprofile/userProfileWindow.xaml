@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Your profile" Height="485" Width="850"
         MinWidth="850" MinHeight="485" MaxWidth="850" MaxHeight="485" 
-        Background="#FFA5D6F6" WindowStartupLocation="CenterScreen">
+        Background="#FFA5D6F6" WindowStartupLocation="CenterScreen" Icon="/free-icon-music-and-multimedia-8216026.png">
 
     <Window.Resources>
         <!-- Стиль для кнопок -->

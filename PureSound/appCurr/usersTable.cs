@@ -14,6 +14,9 @@ namespace PureSound.appCurr
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics;
+    using System.IO;
+    using System.Windows.Media.Imaging;
+    using System.Windows.Media;
     using static NuGet.Client.ManagedCodeConventions;
 
     public partial class usersTable
@@ -32,29 +35,61 @@ namespace PureSound.appCurr
         public string userLogin { get; set; }
         public string userPassword { get; set; }
         public string imageUser { get; set; }
-        public string CurrentPhoto
+
+        public ImageSource CurrentPhoto
         {
             get
             {
                 if (string.IsNullOrEmpty(imageUser) || string.IsNullOrWhiteSpace(imageUser))
                 {
-                    return "/pages/player/profile.png";
+                    // Возвращаем изображение по умолчанию
+                    return new BitmapImage(new Uri("pack://application:,,,/pages/player/profile.png"));
+                }
+                else if (IsBase64String(imageUser))
+                {
+                    // Преобразуем Base64-строку в BitmapImage
+                    byte[] byteArray = Convert.FromBase64String(imageUser);
+                    using (var memoryStream = new MemoryStream(byteArray))
+                    {
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                        bitmapImage.Freeze();
+                        return bitmapImage;
+                    }
+                }
+                else if (System.IO.File.Exists(imageUser))
+                {
+                    // Возвращаем изображение из файла
+                    return new BitmapImage(new Uri(imageUser, UriKind.Absolute));
                 }
                 else
                 {
-                    if (System.IO.File.Exists(imageUser))
-                    {
-                        return "" + imageUser;
-                    }
-                    else
-                    {
-                        return "/pages/player/profile.png";
-                    }
+                    // Возвращаем изображение по умолчанию, если путь некорректен
+                    return new BitmapImage(new Uri("pack://application:,,,/pages/player/profile.png"));
                 }
-            }   
+            }
         }
-        
-       
+        private bool IsBase64String(string base64)
+        {
+            if (string.IsNullOrEmpty(base64) || base64.Length % 4 != 0 || base64.Contains(" ") || base64.Contains("\t") || base64.Contains("\r") || base64.Contains("\n"))
+            {
+                return false;
+            }
+
+            try
+            {
+                Convert.FromBase64String(base64);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<playlistsTable> playlistsTable { get; set; }
