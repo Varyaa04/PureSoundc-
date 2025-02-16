@@ -9,6 +9,7 @@
 
 namespace PureSound.appCurr
 {
+    using Microsoft.Win32;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
@@ -17,7 +18,6 @@ namespace PureSound.appCurr
 
     public partial class usersTable
     {
-        public event PropertyChangedEventHandler PropertyChanged;
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public usersTable()
         {
@@ -25,46 +25,36 @@ namespace PureSound.appCurr
             this.tableFavourite = new HashSet<tableFavourite>();
         }
 
-        private string _imageUser;
-        public string imageUser
-        {
-            get { return _imageUser; }
-            set
-            {
-                _imageUser = value;
-                OnPropertyChanged(nameof(imageUser));
-                OnPropertyChanged(nameof(CurrentPhoto)); // Уведомление об изменении CurrentPhoto
-            }
-        }
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
+      
+        public int idUser { get; set; }
+        public string userName { get; set; }
+        public string userEmail { get; set; }
+        public string userLogin { get; set; }
+        public string userPassword { get; set; }
+        public string imageUser { get; set; }
         public string CurrentPhoto
         {
             get
             {
-                Debug.WriteLine($"CurrentPhoto: imageUser = {imageUser}");
                 if (string.IsNullOrEmpty(imageUser) || string.IsNullOrWhiteSpace(imageUser))
                 {
                     return "/pages/player/profile.png";
                 }
                 else
                 {
-                    return imageUser;
+                    if (System.IO.File.Exists(imageUser))
+                    {
+                        return "" + imageUser;
+                    }
+                    else
+                    {
+                        return "/pages/player/profile.png";
+                    }
                 }
-            }
+            }   
         }
-
-
-        public int idUser { get; set; }
-        public string userName { get; set; }
-        public string userEmail { get; set; }
-        public string userLogin { get; set; }
-        public string userPassword { get; set; }
-      
+        
+       
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<playlistsTable> playlistsTable { get; set; }

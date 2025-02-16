@@ -186,33 +186,35 @@ namespace PureSound.pages.player
         private void TracksList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
         }
-    }
 
-    public class Track
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Artist { get; set; }
-        public string Duration { get; set; }
-        public string CoverUrl { get; set; }
-    }
+        public class Track
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public string Artist { get; set; }
+            public string Duration { get; set; }
+            public string CoverUrl { get; set; }
+        }
 
-    public class DeezerTrack
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public DeezerArtist Artist { get; set; }
-        public int Duration { get; set; }
-        public DeezerAlbum Album { get; set; }
-    }
+        public class DeezerTrack
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public int Duration { get; set; }
+            public DeezerArtist Artist { get; set; }
+            public DeezerAlbum Album { get; set; }
 
-    public class DeezerArtist
-    {
-        public string Name { get; set; }
-    }
+        }
 
-    public class DeezerAlbum
-    {
-        public string CoverMedium { get; set; }
+        public class DeezerArtist
+        {
+            public string Name { get; set; }
+        }
+
+        public class DeezerAlbum
+        {
+            [JsonProperty("cover_medium")]
+            public string CoverMedium { get; set; }
+        }
     }
 }

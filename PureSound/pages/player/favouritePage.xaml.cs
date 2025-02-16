@@ -38,7 +38,7 @@ namespace PureSound.pages.player
         {
             InitializeComponent();
             _dbContext = new pureSoundEntities();
-            Loaded += async (s, e) => await LoadFavouriteTracksAsync();
+            LoadFavouriteTracksAsync();
         }
 
         private async Task LoadFavouriteTracksAsync()
@@ -102,7 +102,7 @@ namespace PureSound.pages.player
 
                     var deezerTrack = JsonConvert.DeserializeObject<DeezerTrack>(response);
 
-                    if (deezerTrack == null )
+                    if (deezerTrack == null)
                     {
                         Debug.WriteLine($"Ошибка: данные о треке {trackId} отсутствуют или некорректны.");
                         return null;
@@ -120,7 +120,7 @@ namespace PureSound.pages.player
                             CoverUrl = deezerTrack.Album?.CoverMedium ?? "https://img.freepik.com/free-vector/vector-beam-musical-note-sticker_53876-127376.jpg?t=st=1739215131~exp=1739218731~hmac=96c235e09b80c4d7e3c775db47c6a317acb5b24aadf32514c2e81187bde1bc39&w=740" // Запасной URL
                         };
                     }
-                  
+
                 }
                 catch (Exception ex)
                 {
@@ -203,34 +203,36 @@ namespace PureSound.pages.player
             string query = SearchBox.Text.Trim();
             FilterTracks(query);
         }
+
+
+        public class Track
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public string Artist { get; set; }
+            public string Duration { get; set; }
+            public string CoverUrl { get; set; }
+        }
+
+        public class DeezerTrack
+        {
+            public string Id { get; set; }
+            public string Title { get; set; }
+            public int Duration { get; set; }
+            public DeezerArtist Artist { get; set; }
+            public DeezerAlbum Album { get; set; }
+
+        }
+
+        public class DeezerArtist
+        {
+            public string Name { get; set; }
+        }
+
+        public class DeezerAlbum
+        {
+            [JsonProperty("cover_medium")]
+            public string CoverMedium { get; set; }
+        }
     }
 }
-    public class Track
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public string Artist { get; set; }
-        public string Duration { get; set; }
-        public string CoverUrl { get; set; }
-    }
-
-    public class DeezerTrack
-    {
-        public string Id { get; set; }
-        public string Title { get; set; }
-        public int Duration { get; set; }
-        public DeezerArtist Artist { get; set; }
-        public DeezerAlbum Album { get; set; }  
-
-    }
-
-    public class DeezerArtist
-    {
-        public string Name { get; set; }
-    }
-
-    public class DeezerAlbum
-    {
-        [JsonProperty("cover_medium")]
-        public string CoverMedium { get; set; }
-    }

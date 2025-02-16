@@ -3,6 +3,7 @@ using PureSound.pages.player;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -76,6 +77,21 @@ namespace PureSound.pages.userprofile
 
             tbPassword.PasswordChar = '☭';
             tbPasswordVisible.Visibility = Visibility.Hidden;
+
+            if (!string.IsNullOrEmpty(curUser.imageUser))
+            {
+                string appFolder = AppDomain.CurrentDomain.BaseDirectory;
+                string fullPath = System.IO.Path.Combine(appFolder, curUser.imageUser);
+
+                if (System.IO.File.Exists(fullPath))
+                {
+                    userPhotoImage.Source = new BitmapImage(new Uri(fullPath));
+                }
+                else
+                {
+                    userPhotoImage.Source = new BitmapImage(new Uri("/pages/player/profile.png", UriKind.Relative));
+                }
+            }
         }
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
@@ -135,9 +151,35 @@ namespace PureSound.pages.userprofile
 
             if (openFileDialog.ShowDialog() == true)
             {
-                string filePath = openFileDialog.FileName;
-                curUser.imageUser = filePath;
-                userPhotoImage.Source = new BitmapImage(new Uri(filePath));
+                try
+                {
+                    // Читаем файл как массив байтов
+                    byte[] imageBytes = File.ReadAllBytes(openFileDialog.FileName);
+
+                    // Кодируем массив байтов в Base64
+                    string base64Image = Convert.ToBase64String(imageBytes);
+
+                    // Сохраняем Base64-строку в свойстве curUser.imageUser
+                    curUser.imageUser = base64Image;
+
+                    // Преобразуем Base64-строку в изображение и устанавливаем его в Image control
+                    byte[] byteArray = Convert.FromBase64String(base64Image);
+                    using (var memoryStream = new MemoryStream(byteArray))
+                    {
+                        var bitmapImage = new BitmapImage();
+                        bitmapImage.BeginInit();
+                        bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
+                        bitmapImage.StreamSource = memoryStream;
+                        bitmapImage.EndInit();
+                        userPhotoImage.Source = bitmapImage;
+                    }
+
+                    Debug.WriteLine($"Изображение успешно загружено и сохранено в формате Base64.");
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine($"Ошибка при загрузке изображения: {ex.Message}");
+                }
             }
         }
         private void btnSave_Click(object sender, RoutedEventArgs e)

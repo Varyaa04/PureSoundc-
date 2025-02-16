@@ -2,6 +2,7 @@
 using PureSound.pages.userprofile;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ namespace PureSound.pages.player
             {
                 usernameTb.Text = userName;
             }
-
+            Debug.WriteLine($" imageUser = {user.imageUser}");
         }
 
         private void btnFav_Click(object sender, RoutedEventArgs e)
